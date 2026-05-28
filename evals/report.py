@@ -81,7 +81,7 @@ def save_results(all_results: list[dict]) -> Path:
         },
     }
 
-    with open(output_path, "w") as f:
+    with open(output_path, "w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2)
 
     print(f"  Results saved to: {output_path}")

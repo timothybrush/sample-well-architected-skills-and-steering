@@ -25,7 +25,7 @@ CONFIG_PATH = Path(__file__).parent / "config.yaml"
 
 
 def load_config(config_path: Path = CONFIG_PATH) -> dict:
-    with open(config_path) as f:
+    with open(config_path, encoding="utf-8") as f:
         return yaml.safe_load(f)
 
 
@@ -40,7 +40,7 @@ def load_evals(skill_name: str) -> dict:
     evals_path = SKILLS_DIR / skill_name / "evals" / "evals.json"
     if not evals_path.exists():
         raise FileNotFoundError(f"Evals not found: {evals_path}")
-    with open(evals_path) as f:
+    with open(evals_path, encoding="utf-8") as f:
         return json.load(f)
 
 
