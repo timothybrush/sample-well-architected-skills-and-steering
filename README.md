@@ -491,17 +491,6 @@ graph LR
 | OpenClaw | `AGENTS.md` | `.agents/skills/*/SKILL.md` |
 | AWS DevOps Agent | N/A (skills are self-contained) | `SKILL.md` zip upload to Agent Space |
 
-### Kiro Powers
-
-[Kiro Powers](https://kiro.dev) are bundled, installable units that activate contextually based on conversation keywords. Unlike always-on steering, Powers load guidance dynamically when relevant topics arise.
-
-| Power | Status | Description |
-| ----- | ------ | ----------- |
-| `well-architected` | 🚧 In progress | Full WA framework — all 6 pillars, activated on architecture discussions |
-
-> [!NOTE]
-> Powers are the recommended way to use WA guidance in Kiro going forward. They provide richer activation (keyword-based), optional MCP tool integration, and one-click installation from the Powers gallery.
-
 ---
 
 ## 📋 Skills overview
