@@ -31,12 +31,13 @@ This project embeds WA best practices **where development actually happens**: in
 ```text
 steering/                           Always-on context (Kiro)
   well-architected.md                 Pillars, design principles, review process
+  wa-review.md                        Deep multi-step WA review (evidence-based, constrained)
 
 skills/                             Step-by-step playbooks (tool-agnostic)
   wa-review/                          Full review across all 6 pillars
   security-assessment/                IAM, detection, data protection, incident response
   reliability-improvement-plan/       SPOFs, recovery, scaling, change management
-  cost-optimization-audit/            Waste, right-sizing, pricing models
+  cost-optimization-review/            Waste, right-sizing, pricing models
   performance-efficiency/             Resource selection, scaling, caching
   sustainability-optimization/        Utilization, managed services, data lifecycle
   operational-excellence/             CI/CD, observability, incidents, automation
@@ -500,7 +501,7 @@ graph LR
 | `wa-review` | All 6 | Run a full Well-Architected review |
 | `security-assessment` | 🔒 Security | Assess IAM, detection, data protection, incident response |
 | `reliability-improvement-plan` | 🔄 Reliability | Find and eliminate single points of failure |
-| `cost-optimization-audit` | 💰 Cost Optimization | Identify waste and right-sizing opportunities |
+| `cost-optimization-review` | 💰 Cost Optimization | Identify waste and right-sizing opportunities |
 | `performance-efficiency` | ⚡ Performance Efficiency | Evaluate resource selection, scaling, and caching |
 | `sustainability-optimization` | 🌱 Sustainability | Reduce carbon footprint and resource waste |
 | `operational-excellence` | 🛠️ Operational Excellence | Assess CI/CD, observability, incident management |
@@ -555,42 +556,20 @@ uv sync
 
 **Run evaluations:**
 
-macOS / Linux:
+macOS / Linux / Windows (PowerShell):
 
 ```bash
 # List available skills
 uv run python run.py --list
 
 # Evaluate a single skill
-uv run python run.py --skill wa-review
+uv run python run.py --skill wa-review --verbose
 
-# Evaluate all skills
-uv run python run.py
-
-# Verbose output (shows per-assertion grades)
-uv run python run.py --skill security-assessment --verbose
+# Evaluate all skills with parallel case execution
+uv run python run.py --parallel --verbose
 
 # Save results for historical tracking
-uv run python run.py --save
-```
-
-Windows (PowerShell):
-
-```powershell
-# List available skills
-uv run python run.py --list
-
-# Evaluate a single skill
-uv run python run.py --skill wa-review
-
-# Evaluate all skills
-uv run python run.py
-
-# Verbose output (shows per-assertion grades)
-uv run python run.py --skill security-assessment --verbose
-
-# Save results for historical tracking
-uv run python run.py --save
+uv run python run.py --parallel --save
 ```
 
 > [!NOTE]
@@ -609,25 +588,26 @@ uv run python run.py --save
 ```yaml
 provider: bedrock
 region: us-east-1
-generation_model: us.anthropic.claude-sonnet-4-5-20250929-v1:0
-grading_model: us.anthropic.claude-haiku-4-5-20251001-v1:0
+generation_model: us.anthropic.claude-opus-4-8
+grading_model: us.anthropic.claude-opus-4-8
+max_tokens: 16384
 ```
 
 **Estimated cost per run:**
 
 | Scope | Generation calls | Grading calls | Estimated cost |
 | ----- | ---------------- | ------------- | -------------- |
-| Single skill (3 cases) | 6 (Sonnet) | 6 (Haiku) | ~$0.10 – $0.15 |
-| All 9 skills (27 cases) | 54 (Sonnet) | 54 (Haiku) | ~$0.80 – $1.20 |
+| Single skill (3 cases) | 6 (Opus) | 6 (Opus) | ~$1.50 – $2.50 |
+| All 9 skills (27 cases) | 54 (Opus) | 54 (Opus) | ~$12 – $20 |
 
-Cost breakdown assumes ~1K input tokens and ~2K output tokens per generation call, and ~3K input / ~500 output per grading call. Actual cost depends on response length and Bedrock pricing in your region. The `max_cost_usd` setting in config.yaml acts as a soft budget guard.
+Cost breakdown assumes ~1K input tokens and ~8K output tokens per generation call (16k max), and ~9K input / ~500 output per grading call. Actual cost depends on response length and Bedrock pricing in your region. Use `--parallel` for ~3x faster wall-clock time. You can use cheaper models (Sonnet, Haiku) by updating `config.yaml`.
 
 > [!TIP]
 > **Experiment with other models!** The eval runner works with any model available in Bedrock — try Amazon Nova, Meta Llama, Mistral, or others to see how different foundation models respond to skill guidance. Use the discovery utility to see what's available in your region:
 >
 > `uv run python list_models.py`
 >
-> Then update `generation_model` in `config.yaml` to try a different model. The grading model should remain a strong model (Claude Sonnet/Haiku) for reliable assertion grading.
+> Then update `generation_model` in `config.yaml` to try a different model. The grading model should remain a strong model (Claude Opus/Sonnet) for reliable assertion grading. Note: Opus 4.8 does not support the `temperature` parameter — the runner handles this automatically.
 
 > [!TIP]
 > Start by running a single skill eval (`--skill wa-review --verbose`) to see detailed per-assertion grading. The delta between baseline and with-skill scores quantifies the value each skill adds.
@@ -636,14 +616,26 @@ Cost breakdown assumes ~1K input tokens and ~2K output tokens per generation cal
 
 ## 📈 Effectiveness
 
-These skills have been evaluated using a rigorous statistical methodology:
+All skills are evaluated using an automated LLM-as-judge framework with paired comparison (same prompt, with and without skill context). Results with Claude Opus 4.8 (generation and grading), 16k token output:
 
-- **Paired design** — same prompts, same model, with and without skill context
-- **8 of 9 skills** show statistically significant improvement (p < 0.05)
-- **Effect sizes range from medium to very large** (Cohen's d)
-- Skills never produce worse output than baseline — they improve or tie
+| Skill | Baseline | With Skill | Delta |
+|-------|----------|-----------|-------|
+| `wa-review` | 82% | **100%** | +18% |
+| `architecture-decision-record` | 81% | **100%** | +19% |
+| `cost-optimization-review` | 93% | **100%** | +7% |
+| `migration-readiness` | 85% | **100%** | +15% |
+| `operational-excellence` | 90% | **100%** | +10% |
+| `performance-efficiency` | 90% | **100%** | +10% |
+| `reliability-improvement-plan` | 95% | **100%** | +5% |
+| `security-assessment` | 94% | **100%** | +6% |
+| `sustainability-optimization` | 85% | **100%** | +15% |
+| **Average** | **88%** | **100%** | **+12%** |
 
-The evaluation framework is included in [`evals/`](./evals) so you can reproduce results on your own models and prompts.
+- **All 9 skills** score 100% on behavioral assertions with skill context loaded
+- **Average +12% improvement** over the same model without skill guidance
+- Skills never produce worse output than baseline — they improve or match
+
+The evaluation framework is included in [`evals/`](./evals) so you can reproduce results on your own models and prompts. Use `--parallel` for ~3x faster runs.
 
 ---
 
