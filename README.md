@@ -674,5 +674,4 @@ This project is licensed under the [MIT-0 License](LICENSE).
 - [Kiro — AI-powered IDE](https://kiro.dev)
 - [AWS DevOps Agent](https://docs.aws.amazon.com/devopsagent/latest/userguide/)
 - [Agent Skills Specification](https://agentskills.io/)
-- [OpenClaw — Personal AI assistant platform](https://openclaw.ai)
 - [skills.sh — Skills directory for AI agents](https://skills.sh)
