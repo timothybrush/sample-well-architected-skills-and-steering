@@ -43,6 +43,7 @@ skills/                             Step-by-step playbooks (tool-agnostic)
   operational-excellence/             CI/CD, observability, incidents, automation
   migration-readiness/                7 Rs assessment with migration plan
   architecture-decision-record/       WA-aligned ADRs with pillar impact
+  wa-builder/                         Learn WA + produce visual artifacts (diagrams, trees, roadmaps)
 
 assets/                             Shared reference material
   well-architected-best-practices.md  Per-pillar investigation checklists
@@ -507,6 +508,7 @@ graph LR
 | `operational-excellence` | 🛠️ Operational Excellence | Assess CI/CD, observability, incident management |
 | `migration-readiness` | All 6 | Assess readiness to migrate a workload to AWS |
 | `architecture-decision-record` | All 6 | Document a design decision with WA pillar impact |
+| `wa-builder` | All 6 | Learn WA for your project + produce visual artifacts (diagrams, decision trees, roadmaps) |
 
 ---
 
