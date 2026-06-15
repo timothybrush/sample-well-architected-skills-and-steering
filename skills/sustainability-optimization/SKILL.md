@@ -1,6 +1,7 @@
 ---
 name: sustainability-optimization
 description: Assess a workload's environmental sustainability posture by analyzing resource utilization patterns, managed service adoption, data lifecycle configs, and compute efficiency in the codebase against the Well-Architected Sustainability pillar.
+not_for: security assessment, cost optimization, migration planning, reliability assessment, full cross-pillar WA review
 version: 2.0.0
 ---
 
@@ -125,6 +126,16 @@ You MUST flag:
 - Older generation instances (e.g., m4 instead of m7g, t2 instead of t4g)
 - x86 selection where Graviton/ARM is supported by the workload runtime
 - Resources in high-carbon regions without latency justification
+
+---STOP---
+**Checkpoint**: Discovery complete — ready to evaluate against WA Framework
+
+> Discovered compute efficiency ({X} resources, {Y} using Graviton/arm64), data/storage lifecycle configurations, architecture efficiency patterns, development/deployment practices, and region/hardware choices across {packages analyzed}.
+>
+> **Shall I proceed with evaluating these findings against the WA Sustainability pillar questions and assessing impact levels?**
+
+Do NOT proceed past this point until the user explicitly confirms.
+---
 
 ## Step 7: Evaluate against WA Framework questions
 

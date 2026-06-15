@@ -1,6 +1,7 @@
 ---
 name: performance-efficiency
 description: Evaluate a workload's performance efficiency by analyzing resource selection, scaling configs, caching patterns, and data access patterns in the codebase against the Well-Architected Performance Efficiency pillar.
+not_for: security assessment, cost optimization, migration planning, reliability assessment, full cross-pillar WA review
 version: 2.0.0
 ---
 
@@ -144,6 +145,16 @@ You MUST flag:
 - No performance alarms (only error alarms)
 - Average-only metrics (hides tail latency issues)
 
+---STOP---
+**Checkpoint**: Discovery complete — ready to evaluate against WA Framework
+
+> Discovered compute selection ({X} resources), storage/database configurations, networking patterns, scaling policies, application performance patterns, and monitoring setup across {packages analyzed}.
+>
+> **Shall I proceed with evaluating these findings against the WA Performance Efficiency pillar questions and assessing risk levels?**
+
+Do NOT proceed past this point until the user explicitly confirms.
+---
+
 ## Step 8: Evaluate against WA Framework questions
 
 For each question, provide: **Status**, **Evidence** (file:line), **Gaps**, **Risk**.
@@ -191,6 +202,16 @@ For each finding, assess using Impact × Likelihood:
 | Minor    | High       | Medium     |
 | Minor    | Medium     | Low        |
 | Minor    | Low        | Low        |
+
+---STOP---
+**Checkpoint**: Risk assessment complete — ready to produce the final report
+
+> Assessed {N} findings across compute selection, storage/database, networking, scaling, application patterns, and monitoring. Risk distribution: {X} Critical, {Y} High, {Z} Medium, {W} Low. Key performance bottlenecks identified with improvement estimates.
+>
+> **Shall I produce the full Performance Efficiency assessment with prioritized remediation plan?**
+
+Do NOT proceed past this point until the user explicitly confirms.
+---
 
 ## Step 10: Produce findings
 

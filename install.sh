@@ -118,6 +118,16 @@ copy_or_link() {
   fi
 }
 
+copy_skill_references() {
+  local skill_dir="$1"
+  local dest_dir="$2"
+  if [[ -d "$skill_dir/references" ]]; then
+    for ref_file in "$skill_dir/references"/*; do
+      [[ -f "$ref_file" ]] && copy_or_link "$ref_file" "$dest_dir/references/$(basename "$ref_file")"
+    done
+  fi
+}
+
 install_kiro() {
   local base="$TARGET_DIR"
   if [[ "$GLOBAL" == true ]]; then
@@ -132,6 +142,7 @@ install_kiro() {
     skill_name="$(basename "$skill_dir")"
     [[ "$skill_name" == "_shared" ]] && continue
     copy_or_link "$skill_dir/SKILL.md" "$base/.kiro/skills/$skill_name/SKILL.md"
+    copy_skill_references "$skill_dir" "$base/.kiro/skills/$skill_name"
   done
   echo "  Done. Kiro will load steering automatically and skills on demand."
   echo ""
@@ -158,6 +169,7 @@ install_claude_code() {
     skill_name="$(basename "$skill_dir")"
     [[ "$skill_name" == "_shared" ]] && continue
     copy_or_link "$skill_dir/SKILL.md" "$base/.claude/skills/$skill_name/SKILL.md"
+    copy_skill_references "$skill_dir" "$base/.claude/skills/$skill_name"
   done
   echo "  Done. Skills installed to .claude/skills/; slash commands also available."
   echo ""
@@ -183,6 +195,7 @@ install_cursor() {
     skill_name="$(basename "$skill_dir")"
     [[ "$skill_name" == "_shared" ]] && continue
     copy_or_link "$skill_dir/SKILL.md" "$base/.cursor/skills/$skill_name/SKILL.md"
+    copy_skill_references "$skill_dir" "$base/.cursor/skills/$skill_name"
   done
   echo "  Done. The well-architected rule is always-on; wa-review activates on demand."
   echo ""
@@ -203,6 +216,7 @@ install_codex() {
     skill_name="$(basename "$skill_dir")"
     [[ "$skill_name" == "_shared" ]] && continue
     copy_or_link "$skill_dir/SKILL.md" "$base/skills/$skill_name/SKILL.md"
+    copy_skill_references "$skill_dir" "$base/skills/$skill_name"
   done
   echo "  Done. Codex will read AGENTS.md and reference skills/ on demand."
   echo ""
@@ -223,6 +237,7 @@ install_windsurf() {
     skill_name="$(basename "$skill_dir")"
     [[ "$skill_name" == "_shared" ]] && continue
     copy_or_link "$skill_dir/SKILL.md" "$base/skills/$skill_name/SKILL.md"
+    copy_skill_references "$skill_dir" "$base/skills/$skill_name"
   done
   echo "  Done. Windsurf will load .windsurfrules automatically."
   echo ""
@@ -256,6 +271,7 @@ install_cline() {
     skill_name="$(basename "$skill_dir")"
     [[ "$skill_name" == "_shared" ]] && continue
     copy_or_link "$skill_dir/SKILL.md" "$base/skills/$skill_name/SKILL.md"
+    copy_skill_references "$skill_dir" "$base/skills/$skill_name"
   done
   echo "  Done. Cline will load .clinerules automatically."
   echo ""
@@ -276,6 +292,7 @@ install_gemini_cli() {
     skill_name="$(basename "$skill_dir")"
     [[ "$skill_name" == "_shared" ]] && continue
     copy_or_link "$skill_dir/SKILL.md" "$base/skills/$skill_name/SKILL.md"
+    copy_skill_references "$skill_dir" "$base/skills/$skill_name"
   done
   echo "  Done. Gemini CLI will load GEMINI.md automatically and reference skills/ on demand."
   echo ""
@@ -294,6 +311,7 @@ install_antigravity() {
       skill_name="$(basename "$skill_dir")"
     [[ "$skill_name" == "_shared" ]] && continue
       copy_or_link "$skill_dir/SKILL.md" "$HOME/.gemini/skills/$skill_name/SKILL.md"
+      copy_skill_references "$skill_dir" "$HOME/.gemini/skills/$skill_name"
     done
     echo "  Done. Global rules installed to ~/.gemini/GEMINI.md."
   else
@@ -311,6 +329,7 @@ install_antigravity() {
       skill_name="$(basename "$skill_dir")"
     [[ "$skill_name" == "_shared" ]] && continue
       copy_or_link "$skill_dir/SKILL.md" "$base/.agents/skills/$skill_name/SKILL.md"
+      copy_skill_references "$skill_dir" "$base/.agents/skills/$skill_name"
     done
     echo "  Done. Workspace rules in .agents/rules/ and skills in .agents/skills/."
   fi
@@ -332,6 +351,7 @@ install_junie() {
     [[ "$skill_name" == "_shared" ]] && continue
     copy_or_link "$skill_dir/SKILL.md" "$base/.junie/skills/$skill_name/SKILL.md"
   done
+    copy_skill_references "$skill_dir" "$base/.junie/skills/$skill_name"
   echo "  Done. Guidelines are always-on; skills activate on demand."
   echo ""
 }
@@ -356,6 +376,7 @@ install_amp() {
     skill_name="$(basename "$skill_dir")"
     [[ "$skill_name" == "_shared" ]] && continue
     copy_or_link "$skill_dir/SKILL.md" "$skills_dir/$skill_name/SKILL.md"
+    copy_skill_references "$skill_dir" "$skills_dir/$skill_name"
   done
   echo "  Done. Amp will discover skills from .agents/skills/ automatically."
   echo ""
@@ -381,6 +402,7 @@ install_openclaw() {
     skill_name="$(basename "$skill_dir")"
     [[ "$skill_name" == "_shared" ]] && continue
     copy_or_link "$skill_dir/SKILL.md" "$skills_dir/$skill_name/SKILL.md"
+    copy_skill_references "$skill_dir" "$skills_dir/$skill_name"
   done
   echo "  Done. OpenClaw will discover skills from .agents/skills/ automatically."
   echo ""

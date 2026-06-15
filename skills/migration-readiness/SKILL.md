@@ -1,6 +1,7 @@
 ---
 name: migration-readiness
 description: Assess a workload's readiness to migrate to AWS by analyzing existing code, dependencies, configurations, and infrastructure to produce evidence-backed findings covering the 7 Rs, risks, and a migration plan.
+not_for: architecture decision records, single-pillar assessments, cost optimization of existing AWS workloads, full cross-pillar WA review
 version: 2.0.0
 ---
 
@@ -91,6 +92,16 @@ You MUST flag as HIGH RISK:
 - Latency-sensitive integrations that will span hybrid during migration
 - Hard dependencies on on-premises systems that cannot move (require hybrid connectivity)
 
+---STOP---
+**Checkpoint**: Discovery and dependency mapping complete — ready to determine migration strategy
+
+> Mapped the application stack ({X} components), infrastructure configurations, and dependency relationships. Identified {Y} blockers, {Z} high-risk dependencies (shared databases, latency-sensitive integrations), and migration wave groupings.
+>
+> **Shall I proceed with determining the migration strategy (7 Rs) for each component and assessing readiness by pillar?**
+
+Do NOT proceed past this point until the user explicitly confirms.
+---
+
 ## Step 5: Determine migration strategy (7 Rs)
 
 For each component, evaluate which strategy fits based on code evidence:
@@ -164,6 +175,16 @@ For each risk, assess using Impact × Likelihood:
 | Minor    | High       | Medium     |
 | Minor    | Medium     | Low        |
 | Minor    | Low        | Low        |
+
+---STOP---
+**Checkpoint**: Risk assessment complete — ready to produce the final migration assessment
+
+> Assessed {N} risks across the migration. Risk distribution: {X} Critical, {Y} High, {Z} Medium, {W} Low. Overall readiness: {Ready / Conditionally Ready / Not Ready}. Critical blockers and mitigations identified.
+>
+> **Shall I produce the full Migration Readiness assessment with migration plan and cost comparison?**
+
+Do NOT proceed past this point until the user explicitly confirms.
+---
 
 ## Step 8: Produce the assessment
 

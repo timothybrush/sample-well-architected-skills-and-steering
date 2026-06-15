@@ -1,0 +1,25 @@
+{
+  "skill_name": "operational-excellence",
+  "prompts": [
+    {"text": "assess our CI/CD pipeline and deployment practices", "should_trigger": true},
+    {"text": "review observability coverage and monitoring setup", "should_trigger": true},
+    {"text": "evaluate our incident management and response process", "should_trigger": true},
+    {"text": "check our deployment strategy and rollback capabilities", "should_trigger": true},
+    {"text": "review runbooks and operational documentation", "should_trigger": true},
+    {"text": "assess automation coverage in our operations", "should_trigger": true},
+    {"text": "evaluate change management and approval processes", "should_trigger": true},
+    {"text": "review alarms, dashboards, and alerting configuration", "should_trigger": true},
+    {"text": "assess operational readiness for production launch", "should_trigger": true},
+    {"text": "evaluate our on-call processes and escalation paths", "should_trigger": true},
+    {"text": "audit IAM roles and encryption settings", "should_trigger": false},
+    {"text": "optimize our AWS costs", "should_trigger": false},
+    {"text": "improve application latency", "should_trigger": false},
+    {"text": "identify single points of failure", "should_trigger": false},
+    {"text": "plan our migration from on-premises", "should_trigger": false},
+    {"text": "reduce our environmental impact", "should_trigger": false},
+    {"text": "do a full Well-Architected review of all pillars", "should_trigger": false},
+    {"text": "create an ADR for our observability tooling choice", "should_trigger": false},
+    {"text": "teach me about Well-Architected with visual aids", "should_trigger": false},
+    {"text": "review multi-AZ failover configuration", "should_trigger": false}
+  ]
+}

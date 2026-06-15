@@ -1,6 +1,7 @@
 ---
 name: reliability-improvement-plan
 description: Identify single points of failure, assess recovery capabilities, and produce a prioritized remediation plan by analyzing IaC, scaling configs, and resilience patterns in the codebase.
+not_for: security assessment, cost optimization, performance tuning, migration planning, full cross-pillar WA review
 version: 2.0.0
 ---
 
@@ -135,6 +136,19 @@ You MUST flag as HIGH RISK:
 - Database migrations that aren't backward-compatible
 - No pre-production environment that mirrors production topology
 
+---STOP---
+**Checkpoint**: Discovery complete — present findings before evaluation.
+
+> Here is what I discovered about your workload's reliability:
+> - **Architecture**: {summary of components and dependencies}
+> - **Single points of failure**: {count identified so far}
+> - **Recovery capabilities**: {summary of backup/DR status}
+>
+> **Shall I proceed with the full reliability evaluation, or would you like to adjust scope?**
+
+Do NOT proceed past this point until the user explicitly confirms.
+---
+
 ## Step 7: Evaluate against WA Framework questions
 
 For each question, provide: **Status**, **Evidence** (file:line), **Gaps**, **Risk**.
@@ -197,6 +211,19 @@ For each finding, assess using Impact × Likelihood:
 | Minor    | High       | Medium     |
 | Minor    | Medium     | Low        |
 | Minor    | Low        | Low        |
+
+---STOP---
+**Checkpoint**: Assessment complete — confirm findings before generating remediation plan.
+
+> Assessment summary:
+> - **Critical findings**: {count}
+> - **High findings**: {count}
+> - **Medium/Low findings**: {count}
+>
+> **Shall I produce the full remediation plan, or would you like to discuss specific findings first?**
+
+Do NOT proceed past this point until the user explicitly confirms.
+---
 
 ## Step 9: Produce the plan
 

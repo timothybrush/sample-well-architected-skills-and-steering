@@ -1,6 +1,7 @@
 ---
 name: operational-excellence
 description: Assess a workload's operational excellence posture by analyzing CI/CD pipelines, observability instrumentation, deployment configs, and incident management patterns in the codebase to produce evidence-backed findings.
+not_for: security assessment, cost optimization, migration planning, reliability assessment, full cross-pillar WA review
 version: 2.0.0
 ---
 
@@ -78,6 +79,16 @@ You MUST examine:
 - Runbooks and playbooks (SSM documents, markdown runbooks, Step Functions)
 - Escalation configurations
 - Health check implementations (ALB health checks, Route 53, custom endpoints)
+
+---STOP---
+**Checkpoint**: Discovery complete — ready to evaluate against WA Framework
+
+> Discovered CI/CD pipelines ({X} pipeline definitions), observability configurations ({Y} alarm/dashboard/tracing setups), and incident management patterns across {packages analyzed}. Deployment strategies, rollback mechanisms, and monitoring gaps documented.
+>
+> **Shall I proceed with evaluating these findings against the WA Operational Excellence pillar questions and assessing risk levels?**
+
+Do NOT proceed past this point until the user explicitly confirms.
+---
 
 ## Step 5: Evaluate against WA Framework questions
 

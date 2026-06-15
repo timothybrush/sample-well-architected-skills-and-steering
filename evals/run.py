@@ -20,7 +20,7 @@ from pathlib import Path
 
 import yaml
 
-from grade import grade_response
+from grade import grade_response, grade_process, grade_knowledge
 from report import print_report, save_results
 
 SKILLS_DIR = Path(__file__).parent.parent / "skills"
@@ -47,6 +47,21 @@ def load_evals(skill_name: str) -> dict:
         return json.load(f)
 
 
+def load_triggering(skill_name: str) -> dict | None:
+    path = SKILLS_DIR / skill_name / "evals" / "triggering.json"
+    if not path.exists():
+        return None
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def list_skills_with_triggering() -> list[str]:
+    return sorted(
+        d.name for d in SKILLS_DIR.iterdir()
+        if d.is_dir() and (d / "evals" / "triggering.json").exists()
+    )
+
+
 def list_skills() -> list[str]:
     return sorted(
         d.name for d in SKILLS_DIR.iterdir()
@@ -66,7 +81,10 @@ def call_bedrock(config: dict, messages: list[dict], system: str | None = None) 
 
     inference_config = {"maxTokens": config["max_tokens"]}
     if config.get("temperature") is not None:
-        inference_config["temperature"] = config["temperature"]
+        model_id = config["generation_model"]
+        # Opus 4.x models do not support temperature
+        if "opus-4" not in model_id:
+            inference_config["temperature"] = config["temperature"]
 
     kwargs = {
         "modelId": config["generation_model"],
@@ -140,6 +158,28 @@ def _run_and_grade_case(config: dict, skill_content: str, case: dict, verbose: b
         },
     }
 
+    # Process assertions (optional layer)
+    if "process_assertions" in case:
+        print(f"  Case {case_id}: Grading process...")
+        process_grades = grade_process(
+            config, outputs["skill_output"], case["process_assertions"]
+        )
+        case_result["with_skill"]["process_grades"] = process_grades
+        case_result["with_skill"]["process_score"] = (
+            sum(1 for g in process_grades if g["pass"]) / len(process_grades)
+        )
+
+    # Knowledge assertions (optional layer)
+    if "knowledge_assertions" in case:
+        print(f"  Case {case_id}: Grading knowledge...")
+        knowledge_grades = grade_knowledge(
+            config, outputs["skill_output"], case["knowledge_assertions"]
+        )
+        case_result["with_skill"]["knowledge_grades"] = knowledge_grades
+        case_result["with_skill"]["knowledge_score"] = (
+            sum(1 for g in knowledge_grades if g["pass"]) / len(knowledge_grades)
+        )
+
     if verbose:
         print(f"\n    Case {case_id} — Baseline: {case_result['baseline']['score']:.0%}  Skill: {case_result['with_skill']['score']:.0%}")
         for i, (bg, sg) in enumerate(zip(baseline_grades, skill_grades)):
@@ -195,6 +235,118 @@ def run_skill_evals(config: dict, skill_name: str, verbose: bool = False, parall
     return results
 
 
+def extract_description(skill_content: str) -> str:
+    """Extract the description field from SKILL.md YAML frontmatter."""
+    lines = skill_content.split("\n")
+    if lines[0].strip() != "---":
+        return ""
+    desc_lines = []
+    capturing_desc = False
+    for line in lines[1:]:
+        if line.strip() == "---":
+            break
+        if line.startswith("description:"):
+            capturing_desc = True
+            value = line[len("description:"):].strip()
+            if value:
+                desc_lines.append(value.strip('"'))
+        elif capturing_desc:
+            if line.startswith(" ") or line.startswith("\t"):
+                desc_lines.append(line.strip())
+            else:
+                capturing_desc = False
+    return " ".join(desc_lines)
+
+
+def run_triggering_evals(config: dict, skill_name: str | None = None, verbose: bool = False) -> list[dict]:
+    """Run triggering evals: test if skill descriptions route user intent correctly."""
+    from report import print_triggering_report
+
+    skills_to_test = [skill_name] if skill_name else list_skills_with_triggering()
+
+    # Collect all skill descriptions for the routing prompt
+    all_skills = list_skills()
+    skill_descriptions = {}
+    for s in all_skills:
+        content = load_skill(s)
+        desc = extract_description(content)
+        if desc:
+            skill_descriptions[s] = desc
+
+    results = []
+
+    for skill in skills_to_test:
+        triggering_data = load_triggering(skill)
+        if not triggering_data:
+            continue
+
+        print(f"\n{'='*60}")
+        print(f"  Triggering eval: {skill}")
+        print(f"{'='*60}")
+
+        prompts = triggering_data["prompts"]
+        tp, tn, fp, fn = 0, 0, 0, 0
+        details = []
+
+        for prompt_item in prompts:
+            text = prompt_item["text"]
+            should_trigger = prompt_item["should_trigger"]
+
+            routing_prompt = "Given these available skills:\n"
+            for s_name, s_desc in skill_descriptions.items():
+                routing_prompt += f"- {s_name}: {s_desc}\n"
+            routing_prompt += (
+                f"\nWhich skill should handle this user request? "
+                f"Reply with ONLY the skill name (exactly as listed above), or \"none\" if no skill matches.\n\n"
+                f"User request: \"{text}\""
+            )
+
+            messages = [{"role": "user", "content": [{"text": routing_prompt}]}]
+            response = call_bedrock(config, messages).strip().lower()
+
+            routed_to_skill = response == skill
+
+            if should_trigger and routed_to_skill:
+                tp += 1
+                status = "TP"
+            elif not should_trigger and not routed_to_skill:
+                tn += 1
+                status = "TN"
+            elif should_trigger and not routed_to_skill:
+                fn += 1
+                status = "FN"
+            else:
+                fp += 1
+                status = "FP"
+
+            details.append({
+                "text": text,
+                "should_trigger": should_trigger,
+                "model_response": response,
+                "status": status,
+            })
+
+            if verbose:
+                icon = "✓" if status in ("TP", "TN") else "✗"
+                print(f"    [{icon} {status}] \"{text[:50]}...\" → {response}")
+
+        total = tp + tn + fp + fn
+        accuracy = (tp + tn) / total if total > 0 else 0
+
+        results.append({
+            "skill_name": skill,
+            "accuracy": accuracy,
+            "tp": tp, "tn": tn, "fp": fp, "fn": fn,
+            "total": total,
+            "details": details,
+        })
+
+        print(f"  Accuracy: {accuracy:.0%} (TP={tp} TN={tn} FP={fp} FN={fn})")
+
+    print_triggering_report(results)
+    return results
+
+
 def main():
     parser = argparse.ArgumentParser(description="Run Well-Architected skill evaluations")
     parser.add_argument(
@@ -225,6 +377,18 @@ def main():
         "--parallel", "-p", action="store_true",
         help="Run eval cases in parallel within each skill"
     )
+    parser.add_argument(
+        "--triggering", action="store_true",
+        help="Run triggering evals (description routing accuracy)"
+    )
+    parser.add_argument(
+        "--model", type=str, default=None,
+        help="Override generation model (e.g. us.anthropic.claude-sonnet-4-6-v1)"
+    )
+    parser.add_argument(
+        "--grading-model", type=str, default=None,
+        help="Override grading model (e.g. us.anthropic.claude-sonnet-4-6-v1)"
+    )
     args = parser.parse_args()
 
     if args.list:
@@ -235,6 +399,15 @@ def main():
 
     config_path = Path(args.config) if args.config else CONFIG_PATH
     config = load_config(config_path)
+
+    if args.model:
+        config["generation_model"] = args.model
+    if args.grading_model:
+        config["grading_model"] = args.grading_model
+
+    if args.triggering:
+        run_triggering_evals(config, skill_name=args.skill, verbose=args.verbose)
+        sys.exit(0)
 
     skills_to_run = [args.skill] if args.skill else list_skills()
 

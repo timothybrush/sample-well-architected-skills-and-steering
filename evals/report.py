@@ -61,6 +61,35 @@ def print_report(all_results: list[dict]) -> None:
     print()
 
 
+def print_triggering_report(results: list[dict]) -> None:
+    """Print a formatted triggering accuracy report."""
+    print("\n")
+    print("=" * 72)
+    print("  TRIGGERING EVAL RESULTS")
+    print("=" * 72)
+
+    print(f"\n  {'Skill':<35} {'Accuracy':>9} {'TP':>4} {'TN':>4} {'FP':>4} {'FN':>4}")
+    print(f"  {'-'*35} {'-'*9} {'-'*4} {'-'*4} {'-'*4} {'-'*4}")
+
+    total_correct = 0
+    total_prompts = 0
+
+    for r in results:
+        print(
+            f"  {r['skill_name']:<35} {r['accuracy']:>8.0%} "
+            f"{r['tp']:>4} {r['tn']:>4} {r['fp']:>4} {r['fn']:>4}"
+        )
+        total_correct += r["tp"] + r["tn"]
+        total_prompts += r["total"]
+
+    if len(results) > 1:
+        overall = total_correct / total_prompts if total_prompts > 0 else 0
+        print(f"  {'-'*35} {'-'*9} {'-'*4} {'-'*4} {'-'*4} {'-'*4}")
+        print(f"  {'OVERALL':<35} {overall:>8.0%}")
+
+    print(f"\n{'='*72}\n")
+
+
 def save_results(all_results: list[dict]) -> Path:
     """Save results as timestamped JSON for historical tracking."""
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)

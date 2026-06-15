@@ -5,5 +5,42 @@
   "abstract": "Generate a Well-Architected-aligned Architecture Decision Record (ADR) that documents a design decision with context, options evaluated, trade-offs, and WA pillar impact.",
   "references": [
     "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html"
-  ]
+  ],
+  "triggers": [
+    "architecture decision record",
+    "ADR creation",
+    "document design decision",
+    "evaluate architectural options",
+    "trade-off analysis",
+    "technology choice documentation",
+    "design rationale",
+    "architecture options comparison",
+    "decision documentation",
+    "WA-aligned ADR"
+  ],
+  "not_for": [
+    "architecture assessments or reviews (use wa-review instead)",
+    "security posture assessment (use security-assessment instead)",
+    "migration planning or 7 Rs (use migration-readiness instead)",
+    "reliability or availability assessment (use reliability-improvement-plan instead)",
+    "learning WA concepts (use wa-builder instead)"
+  ],
+  "metadata": {
+    "service": [
+      "well-architected"
+    ],
+    "task": [
+      "document",
+      "decide",
+      "compare"
+    ],
+    "persona": [
+      "solutions-architect",
+      "tech-lead",
+      "developer"
+    ],
+    "workload": [
+      "any"
+    ]
+  }
 }

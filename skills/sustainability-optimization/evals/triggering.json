@@ -1,0 +1,25 @@
+{
+  "skill_name": "sustainability-optimization",
+  "prompts": [
+    {"text": "assess our workload's sustainability posture", "should_trigger": true},
+    {"text": "reduce our cloud carbon footprint", "should_trigger": true},
+    {"text": "evaluate resource utilization and efficiency", "should_trigger": true},
+    {"text": "identify opportunities for managed service adoption", "should_trigger": true},
+    {"text": "review data lifecycle and storage tiering for sustainability", "should_trigger": true},
+    {"text": "optimize compute efficiency to reduce environmental impact", "should_trigger": true},
+    {"text": "assess our architecture for green computing practices", "should_trigger": true},
+    {"text": "evaluate region selection for carbon intensity", "should_trigger": true},
+    {"text": "review our workload for energy efficiency improvements", "should_trigger": true},
+    {"text": "check if we can reduce over-provisioned resources for sustainability", "should_trigger": true},
+    {"text": "audit our IAM policies and security controls", "should_trigger": false},
+    {"text": "reduce our monthly AWS bill", "should_trigger": false},
+    {"text": "improve application response times", "should_trigger": false},
+    {"text": "identify single points of failure", "should_trigger": false},
+    {"text": "plan our migration to AWS", "should_trigger": false},
+    {"text": "review our deployment pipeline", "should_trigger": false},
+    {"text": "do a complete WA review across all pillars", "should_trigger": false},
+    {"text": "document our architecture decision", "should_trigger": false},
+    {"text": "generate a WA pillar health diagram", "should_trigger": false},
+    {"text": "assess our disaster recovery capabilities", "should_trigger": false}
+  ]
+}

@@ -5,6 +5,7 @@ generation_model: us.anthropic.claude-opus-4-8
 grading_model: us.anthropic.claude-opus-4-8
 
 max_tokens: 16384
+temperature: 0
 
 # Sampling temperature for generation. 0 = deterministic (recommended for evals).
 temperature: 0

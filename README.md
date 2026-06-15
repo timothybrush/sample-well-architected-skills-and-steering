@@ -4,7 +4,7 @@ Reusable skills and steering that teach AI coding agents how to apply the [AWS W
 
 <div align="center">
 
-**Kiro** · **Claude Code** · **Cursor** · **Codex** · **Windsurf** · **GitHub Copilot** · **Gemini CLI** · **Antigravity** · **Junie** · **Amp** · **OpenClaw** · **Cline** · **AWS DevOps Agent**
+**Kiro** · **Kiro CLI** · **Claude Code** · **Cursor** · **Codex** · **Windsurf** · **GitHub Copilot** · **Gemini CLI** · **Antigravity** · **Junie** · **Amp** · **OpenClaw** · **Cline** · **AWS DevOps Agent**
 
 </div>
 
@@ -35,6 +35,8 @@ steering/                           Always-on context (Kiro)
 
 skills/                             Step-by-step playbooks (tool-agnostic)
   wa-review/                          Full review across all 6 pillars
+    references/questions/               57 per-question BP-level reference files (307 BPs)
+    references/lenses/                  Lens-specific references (serverless, gen AI, agentic, etc.)
   security-assessment/                IAM, detection, data protection, incident response
   reliability-improvement-plan/       SPOFs, recovery, scaling, change management
   cost-optimization-review/            Waste, right-sizing, pricing models
@@ -45,11 +47,18 @@ skills/                             Step-by-step playbooks (tool-agnostic)
   architecture-decision-record/       WA-aligned ADRs with pillar impact
   wa-builder/                         Learn WA + produce visual artifacts (diagrams, trees, roadmaps)
 
+examples/                           Sample IaC with planted WA issues (for demos and eval fixtures)
+  insecure-serverless-app-cdk/        CDK TypeScript — ~20 issues across all 6 pillars
+  insecure-serverless-app-terraform/  Terraform — ~17 issues across all 6 pillars
+
 assets/                             Shared reference material
   well-architected-best-practices.md  Per-pillar investigation checklists
   cloudwatch-metrics-reference.md     Metric thresholds + composite alarm patterns
   incident-investigation-patterns.md  Triage, RCA, mitigation playbooks
   skill-authoring-guide.md            DevOps Agent skill authoring guide
+
+scripts/                            Maintenance tooling
+  crawl-wa-framework.py               Crawl AWS docs to regenerate reference files
 
 adapters/                           Tool-specific configuration
   claude-code/                        CLAUDE.md + slash commands
@@ -65,7 +74,8 @@ adapters/                           Tool-specific configuration
   openclaw/                           AGENTS.md + .agents/skills/*.md
   devops-agent/                       Packaging for AWS DevOps Agent
 
-powers/                             Kiro Powers (coming soon)
+powers/                             Kiro Powers
+  wa-review/                          Full WA review with auto-activation and progressive references
 
 evals/                              Automated evaluation runner (Bedrock)
   run.py                              CLI entry point
@@ -202,6 +212,30 @@ New-Item -ItemType Directory -Force -Path .kiro\steering, .kiro\skills
 Copy-Item path\to\this-repo\steering\well-architected.md .kiro\steering\
 Copy-Item -Recurse path\to\this-repo\skills\* .kiro\skills\
 ```
+
+</details>
+
+<details>
+<summary><strong>🔹 Kiro Power (recommended for Kiro users)</strong></summary>
+
+The Kiro Power bundles the wa-review skill + steering + all reference material into a single installable unit with keyword-based auto-activation.
+
+**Install from local clone:**
+
+```bash
+git clone https://github.com/aws-samples/sample-well-architected-skills-and-steering.git
+```
+
+Then in Kiro: Powers panel → **Add Custom Power** → **Import power from a folder** → select `powers/wa-review/`
+
+**What you get:**
+
+- Auto-activates when you mention "well-architected", "architecture review", "security review", "reliability", etc.
+- Loads only relevant steering based on your current task
+- Progressive BP-level reference loading (57 question files + 6 lens packs) — managed automatically
+
+> [!NOTE]
+> Kiro's "Import from GitHub" expects `POWER.md` at the repository root. Since this repo contains multiple skills and adapters, the Power lives under `powers/wa-review/` and must be imported from a local folder. If you want GitHub-based import, you can fork just the `powers/wa-review/` directory into its own repo.
 
 </details>
 
@@ -509,6 +543,83 @@ graph LR
 | `migration-readiness` | All 6 | Assess readiness to migrate a workload to AWS |
 | `architecture-decision-record` | All 6 | Document a design decision with WA pillar impact |
 | `wa-builder` | All 6 | Learn WA for your project + produce visual artifacts (diagrams, decision trees, roadmaps) |
+
+---
+
+## 📊 Reference data and token consumption
+
+The `wa-review` skill includes **307 best practices** across **57 framework questions** plus **6 lens extensions** — sourced directly from the [AWS Well-Architected public documentation](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html). This reference data lives in `skills/wa-review/references/` and is loaded progressively (one question at a time), not all at once.
+
+### Reference data summary
+
+| Content | Files | Size | Loaded when |
+|---------|-------|------|-------------|
+| Framework questions | 57 | 2.2 MB | Full review — one file per question evaluated |
+| Serverless Lens | 5 | 116 KB | Workload uses Lambda/API Gateway/Step Functions |
+| Generative AI Lens | 29 | 368 KB | LLM, RAG, or fine-tuning workloads |
+| Agentic AI Lens | 41 | 1.2 MB | AI agent workloads |
+| Responsible AI Lens | 28 | 780 KB | AI governance and fairness requirements |
+| Hybrid Networking Lens | 30 | 480 KB | Direct Connect, VPN, Transit Gateway |
+| Migration Lens | 6 | 76 KB | Migration planning |
+
+### Token strategies
+
+A **full review** loading all 57 question files would consume ~500K–600K input tokens of reference material. Most models and tools have context limits far below that. Here are strategies to manage token consumption:
+
+| Strategy | How | Best for |
+|----------|-----|----------|
+| **Quick review** | Ask for "quick review" — evaluates at question level without loading BP reference files | Fast feedback, budget-conscious |
+| **Pillar-scoped** | Ask for specific pillars ("review security and reliability only") — loads only 11+13=24 question files | Targeted deep-dives |
+| **Single-question** | Ask about a specific area ("how are we handling permissions?") — loads only SEC03.md | Focused investigation |
+| **Lens-only** | Ask for just a lens review ("evaluate against the serverless lens") — skips core 57 questions | Domain-specific checks |
+| **Progressive** | Start quick, then drill into flagged pillars | Balanced depth vs cost |
+
+> [!TIP]
+> **Recommended workflow for cost-effective reviews:**
+> 1. Start with a **quick review** to identify which pillars have gaps
+> 2. Then do a **pillar-scoped full review** on only the weak areas
+> 3. Apply a **lens** if the workload type warrants it
+>
+> This typically loads 10–20 reference files (~100K tokens) instead of all 57+lens (~600K+).
+
+> [!NOTE]
+> **How the agent manages context:** The skill instructs the agent to work **sequentially** — load one question's reference file, evaluate it, write the finding, then move on. Reference files are not held in context simultaneously. The skill also supports a **two-pass approach**: a quick scan first to identify gaps, then deep-dives only on flagged questions (50–70% token reduction). See the `Context management strategy` section in [wa-review/SKILL.md](skills/wa-review/SKILL.md) for full details.
+
+### Estimated costs
+
+Token estimates assume ~4 characters per token. Costs use [Claude Opus 4 pricing](https://docs.anthropic.com/en/docs/about-claude/models#model-comparison-table) ($15/M input, $75/M output) as a reference — actual costs vary by model, provider, and whether you use caching. Pricing checked June 2026; verify current rates at the link above.
+
+| Review type | Reference tokens loaded | Est. input cost | Est. total cost |
+|-------------|------------------------|-----------------|-----------------|
+| **Quick review** (no reference files) | ~5K (SKILL.md only) | < $0.01 | ~$0.50–$1.00 |
+| **Full review, two-pass** (~20 gap files) | ~190K | ~$2.85 | ~$4–$7 |
+| **Full review, all 57 questions** | ~550K | ~$8.25 | ~$10–$15 |
+| **+ Serverless Lens** | +27K | +$0.40 | +$0.50–$1.00 |
+| **+ Generative AI Lens** | +80K | +$1.20 | +$1.50–$3.00 |
+| **+ Agentic AI Lens** | +294K | +$4.40 | +$5–$8 |
+
+Total cost includes output tokens (the report itself, typically 8K–30K tokens depending on findings).
+
+**Cost-saving tips:**
+- Use the two-pass approach (default) — only loads files for questions with gaps
+- Scope to specific pillars — e.g., "review security only" loads ~10 files instead of 57
+- Use a smaller model for Pass 1 (quick scan) and a stronger model for Pass 2 (deep dive)
+- Enable prompt caching if your provider supports it — the reference files are static and cache well
+
+### Regenerating reference data
+
+The reference files are committed to this repo and don't need regeneration unless the AWS docs update. To refresh:
+
+```bash
+# Regenerate all 57 framework question files
+uv run scripts/crawl-wa-framework.py
+
+# Regenerate a single pillar
+uv run scripts/crawl-wa-framework.py --pillar security
+
+# Add or refresh a lens
+uv run scripts/crawl-wa-framework.py --lens https://docs.aws.amazon.com/wellarchitected/latest/serverless-applications-lens/welcome.html
+```
 
 ---
 

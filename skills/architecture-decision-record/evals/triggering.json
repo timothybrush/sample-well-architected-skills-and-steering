@@ -1,0 +1,25 @@
+{
+  "skill_name": "architecture-decision-record",
+  "prompts": [
+    {"text": "create an ADR for our database technology choice", "should_trigger": true},
+    {"text": "document our decision to use ECS over EKS", "should_trigger": true},
+    {"text": "write an architecture decision record for our caching strategy", "should_trigger": true},
+    {"text": "evaluate options for our messaging system and document the decision", "should_trigger": true},
+    {"text": "create a decision record comparing Aurora vs DynamoDB", "should_trigger": true},
+    {"text": "document the trade-offs of our authentication approach", "should_trigger": true},
+    {"text": "write an ADR for choosing between Lambda and Fargate", "should_trigger": true},
+    {"text": "record our architecture decision with WA pillar impact analysis", "should_trigger": true},
+    {"text": "compare options and document rationale for our API gateway choice", "should_trigger": true},
+    {"text": "create a decision record for our event-driven architecture approach", "should_trigger": true},
+    {"text": "assess our overall security posture", "should_trigger": false},
+    {"text": "reduce our AWS spending", "should_trigger": false},
+    {"text": "improve response times for our API", "should_trigger": false},
+    {"text": "identify single points of failure", "should_trigger": false},
+    {"text": "plan our migration to AWS", "should_trigger": false},
+    {"text": "assess sustainability of our architecture", "should_trigger": false},
+    {"text": "review our deployment pipeline and observability", "should_trigger": false},
+    {"text": "do a comprehensive Well-Architected review", "should_trigger": false},
+    {"text": "teach me about the Well-Architected Framework", "should_trigger": false},
+    {"text": "generate a visual improvement roadmap", "should_trigger": false}
+  ]
+}

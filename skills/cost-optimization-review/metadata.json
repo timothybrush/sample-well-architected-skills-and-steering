@@ -5,5 +5,47 @@
   "abstract": "Review an AWS architecture for cost waste, right-sizing opportunities, and pricing model improvements by examining IaC configurations, scaling policies, and resource provisioning in code.",
   "references": [
     "https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html"
-  ]
+  ],
+  "triggers": [
+    "cost optimization review",
+    "reduce AWS spend",
+    "right-sizing assessment",
+    "pricing model analysis",
+    "waste identification",
+    "reserved instance planning",
+    "savings plan evaluation",
+    "cost allocation review",
+    "budget optimization",
+    "resource utilization analysis"
+  ],
+  "not_for": [
+    "security posture or IAM review (use security-assessment instead)",
+    "reliability or availability assessment (use reliability-improvement-plan instead)",
+    "sustainability or carbon footprint (use sustainability-optimization instead)",
+    "performance tuning or latency (use performance-efficiency instead)",
+    "full cross-pillar WA review (use wa-review instead)"
+  ],
+  "metadata": {
+    "service": [
+      "cost-explorer",
+      "compute-optimizer",
+      "ec2",
+      "rds",
+      "s3",
+      "lambda"
+    ],
+    "task": [
+      "review",
+      "optimize",
+      "audit"
+    ],
+    "persona": [
+      "finops",
+      "solutions-architect",
+      "developer"
+    ],
+    "workload": [
+      "any"
+    ]
+  }
 }

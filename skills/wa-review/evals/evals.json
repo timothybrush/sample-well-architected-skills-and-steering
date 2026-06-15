@@ -11,6 +11,24 @@
         "The output includes a prioritized remediation plan or roadmap with timeframe-based categories",
         "Recommendations reference specific AWS services",
         "The review considers the serverless architecture pattern specifically (mentions Lambda, DynamoDB, or serverless best practices)"
+      ],
+      "process_assertions": [
+        "Response covers all 6 WA pillars (Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization, Sustainability)",
+        "Response includes an architecture overview or summary",
+        "Findings are grouped by pillar or severity",
+        "A prioritized remediation plan or next steps section is included"
+      ],
+      "knowledge_assertions": [
+        {
+          "claim": "Single-region CloudTrail is identified as insufficient for compliance",
+          "source": "AWS Well-Architected Security Pillar - SEC 4",
+          "rationale": "CloudTrail should be enabled in all regions to detect activity in any region"
+        },
+        {
+          "claim": "Developer admin access in dev accounts is flagged as overly permissive",
+          "source": "AWS Well-Architected Security Pillar - SEC 3",
+          "rationale": "Least privilege should apply even in non-production to prevent lateral movement and accidental damage"
+        }
       ]
     },
     {
@@ -37,6 +55,32 @@
         "Suggests advanced improvements like chaos engineering, multi-region, game days, or DR testing",
         "Acknowledges existing good practices (canary deployments, multi-AZ, WAF, GuardDuty)",
         "Covers all 6 pillars including Sustainability"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Review only the Security and Reliability pillars for my workload: API Gateway with Lambda authorizer, DynamoDB with encryption at rest, S3 buckets for user uploads, VPC with public and private subnets, and NAT Gateway. No WAF, no GuardDuty, single-AZ RDS for metadata, no DLQ on SQS.",
+      "expected_output": "A review scoped to ONLY Security and Reliability pillars. Should NOT include findings for Cost, Performance, Sustainability, or Operational Excellence. Should identify WAF absence, no GuardDuty, single-AZ RDS, and missing DLQ as gaps.",
+      "assertions": [
+        "Review is scoped to Security and Reliability only — does NOT produce findings for Cost Optimization, Performance Efficiency, Sustainability, or Operational Excellence",
+        "Flags absence of WAF as a security gap",
+        "Flags absence of GuardDuty or detective controls as a security gap",
+        "Identifies single-AZ RDS as a reliability risk",
+        "Identifies missing DLQ on SQS as a reliability gap",
+        "Produces findings with severity levels for the scoped pillars"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "WA review for our GenAI application: we use Bedrock with Claude for inference, a RAG pipeline with OpenSearch Serverless for vector storage, Lambda for orchestration, S3 for document ingestion, and DynamoDB for conversation history. We have no guardrails, no content filtering, no model evaluation pipeline, and prompts are stored in plaintext in the code.",
+      "expected_output": "A review that covers the core 6 pillars AND additionally applies the Generative AI lens. Should identify missing guardrails, no content filtering, and plaintext prompts as significant findings. Should reference GenAI-specific best practices beyond the standard framework.",
+      "assertions": [
+        "Covers the standard 6 WA pillars (not just GenAI-specific topics)",
+        "Identifies that a Generative AI lens applies and references GenAI-specific best practices",
+        "Flags missing guardrails or content filtering as a finding",
+        "Flags prompts stored in plaintext as a security or operational risk",
+        "Recommends a model evaluation or testing pipeline",
+        "Provides GenAI-specific recommendations (prompt management, model versioning, RAG optimization, or responsible AI practices) beyond standard WA guidance"
       ]
     }
   ]

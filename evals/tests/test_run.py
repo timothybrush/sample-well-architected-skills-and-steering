@@ -75,6 +75,64 @@ def test_all_skills_have_valid_evals():
             assert len(case["assertions"]) >= 3, f"{skill_name}: fewer than 3 assertions"
 
 
+def test_all_skills_description_under_1024_chars():
+    """Skill descriptions MUST be under 1024 characters for selection accuracy."""
+    for skill_dir in SKILLS_DIR.iterdir():
+        if not skill_dir.is_dir():
+            continue
+        skill_md = skill_dir / "SKILL.md"
+        if not skill_md.exists():
+            continue
+        content = skill_md.read_text()
+        if not content.startswith("---"):
+            continue
+        # Parse description from frontmatter
+        lines = content.split("\n")
+        desc_lines = []
+        capturing = False
+        for line in lines[1:]:
+            if line.strip() == "---":
+                break
+            if line.startswith("description:"):
+                capturing = True
+                value = line[len("description:"):].strip().strip('"')
+                if value:
+                    desc_lines.append(value)
+            elif capturing:
+                if line.startswith(" ") or line.startswith("\t"):
+                    desc_lines.append(line.strip())
+                else:
+                    capturing = False
+        desc = " ".join(desc_lines)
+        assert len(desc) <= 1024, (
+            f"{skill_dir.name}: description is {len(desc)} chars (max 1024)"
+        )
+
+
+def test_all_skills_have_metadata_tags():
+    """Every metadata.json should have structured metadata tags."""
+    required_tags = {"service", "task", "persona", "workload"}
+    for skill_dir in SKILLS_DIR.iterdir():
+        if not skill_dir.is_dir():
+            continue
+        meta_path = skill_dir / "metadata.json"
+        if not meta_path.exists():
+            continue
+        import json
+        data = json.loads(meta_path.read_text())
+        assert "metadata" in data, f"{skill_dir.name}: missing 'metadata' in metadata.json"
+        for tag in required_tags:
+            assert tag in data["metadata"], (
+                f"{skill_dir.name}: missing metadata tag '{tag}'"
+            )
+            assert isinstance(data["metadata"][tag], list), (
+                f"{skill_dir.name}: metadata.{tag} must be a list"
+            )
+            assert len(data["metadata"][tag]) >= 1, (
+                f"{skill_dir.name}: metadata.{tag} must have at least one value"
+            )
+
+
 @patch("boto3.client")
 def test_call_bedrock_constructs_correct_request(mock_client_factory):
     from run import call_bedrock

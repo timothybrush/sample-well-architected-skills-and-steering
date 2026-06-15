@@ -1,0 +1,25 @@
+{
+  "skill_name": "security-assessment",
+  "prompts": [
+    {"text": "assess my security posture", "should_trigger": true},
+    {"text": "review IAM policies for least privilege", "should_trigger": true},
+    {"text": "check encryption configuration across all storage", "should_trigger": true},
+    {"text": "find vulnerabilities in my infrastructure code", "should_trigger": true},
+    {"text": "SOC2 compliance gap analysis for our AWS environment", "should_trigger": true},
+    {"text": "audit network security groups and NACLs", "should_trigger": true},
+    {"text": "check our secrets management practices", "should_trigger": true},
+    {"text": "security review before production deployment", "should_trigger": true},
+    {"text": "evaluate our incident response readiness", "should_trigger": true},
+    {"text": "assess data protection controls", "should_trigger": true},
+    {"text": "optimize my Lambda costs and reduce spend", "should_trigger": false},
+    {"text": "improve my application latency and response times", "should_trigger": false},
+    {"text": "identify single points of failure in my architecture", "should_trigger": false},
+    {"text": "migrate my on-prem database to AWS", "should_trigger": false},
+    {"text": "reduce our carbon footprint on AWS", "should_trigger": false},
+    {"text": "create an ADR for our database technology choice", "should_trigger": false},
+    {"text": "assess our CI/CD pipeline and deployment strategy", "should_trigger": false},
+    {"text": "do a full Well-Architected review across all pillars", "should_trigger": false},
+    {"text": "teach me about the Well-Architected Framework", "should_trigger": false},
+    {"text": "generate an architecture diagram with WA annotations", "should_trigger": false}
+  ]
+}

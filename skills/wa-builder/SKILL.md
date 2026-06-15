@@ -1,6 +1,7 @@
 ---
 name: wa-builder
 description: "Learn then Build" — help developers understand AWS Well-Architected best practices for their specific workload, then produce actionable visual artifacts (architecture diagrams with WA annotations, decision trees, improvement roadmaps) they can commit and use. Adapts explanations for beginners and generates artifacts faster for experienced builders. Use when the user wants to understand WA for their project, create architecture diagrams with pillar health overlays, get guided decision flows for architectural choices, or generate a visual improvement roadmap.
+not_for: assessments or reviews that produce findings, security assessment, migration planning, architecture decision records, cost or performance deep-dives
 version: 1.0.0
 ---
 
@@ -74,6 +75,16 @@ Parse the wa-review report to extract:
 - Architecture diagram (if PlantUML was generated)
 
 Use this directly — skip lightweight discovery.
+
+---STOP---
+**Checkpoint**: Workload discovery complete — ready to generate learning content and artifacts
+
+> Identified architecture pattern ({pattern}), AWS services in use ({services}), per-pillar health signals, and top risk hotspots for {workload name}. User experience level: {Beginner / Familiar / Practitioner}.
+>
+> **Shall I proceed with generating the WA learning content and visual artifacts (architecture diagram, decision trees, roadmap)?**
+
+Do NOT proceed past this point until the user explicitly confirms.
+---
 
 ## Step 3: Learning Phase
 

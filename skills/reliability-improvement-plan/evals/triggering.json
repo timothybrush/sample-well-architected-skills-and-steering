@@ -1,0 +1,25 @@
+{
+  "skill_name": "reliability-improvement-plan",
+  "prompts": [
+    {"text": "identify single points of failure in my architecture", "should_trigger": true},
+    {"text": "assess our disaster recovery capabilities", "should_trigger": true},
+    {"text": "review availability and failover configuration", "should_trigger": true},
+    {"text": "check our auto-scaling and health check setup", "should_trigger": true},
+    {"text": "evaluate fault tolerance and resilience patterns", "should_trigger": true},
+    {"text": "create a reliability improvement plan for our workload", "should_trigger": true},
+    {"text": "assess recovery time and recovery point objectives", "should_trigger": true},
+    {"text": "review multi-AZ and multi-region configuration", "should_trigger": true},
+    {"text": "check our backup and restore procedures", "should_trigger": true},
+    {"text": "identify resilience gaps in our microservices", "should_trigger": true},
+    {"text": "audit IAM policies and encryption settings", "should_trigger": false},
+    {"text": "reduce our monthly AWS bill", "should_trigger": false},
+    {"text": "improve application latency and throughput", "should_trigger": false},
+    {"text": "plan migration from on-prem to AWS", "should_trigger": false},
+    {"text": "assess our sustainability posture", "should_trigger": false},
+    {"text": "review deployment strategy and CI/CD pipeline", "should_trigger": false},
+    {"text": "do a full Well-Architected review across all pillars", "should_trigger": false},
+    {"text": "create an ADR for our caching strategy", "should_trigger": false},
+    {"text": "teach me about reliability best practices with diagrams", "should_trigger": false},
+    {"text": "optimize Lambda memory and execution time", "should_trigger": false}
+  ]
+}

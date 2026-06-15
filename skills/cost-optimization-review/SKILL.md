@@ -1,6 +1,7 @@
 ---
 name: cost-optimization-review
 description: Review an AWS architecture for cost waste, right-sizing opportunities, and pricing model improvements by examining IaC configurations, scaling policies, and resource provisioning in the codebase.
+not_for: security assessment, reliability assessment, sustainability optimization, performance tuning, full cross-pillar WA review
 version: 2.0.0
 ---
 
@@ -116,6 +117,16 @@ You MUST flag as IMPROVEMENT OPPORTUNITY:
 - No AWS Budget or Cost Anomaly Detection configured
 - No lifecycle policies on test/temporary resources
 
+---STOP---
+**Checkpoint**: Discovery complete — ready to evaluate against WA Framework
+
+> Discovered compute resources ({X} instances/functions), storage configurations ({Y} buckets/volumes/tables), data transfer patterns, pricing model alignment, and environment lifecycle settings across {packages analyzed}.
+>
+> **Shall I proceed with evaluating these findings against the WA Cost Optimization pillar questions and quantifying savings estimates?**
+
+Do NOT proceed past this point until the user explicitly confirms.
+---
+
 ## Step 7: Evaluate against WA Framework questions
 
 For each question, provide: **Status**, **Evidence** (file:line), **Gaps**, **Risk**.
@@ -172,6 +183,16 @@ For each finding, assess using Impact × Likelihood:
 | Minor    | High       | Medium     |
 | Minor    | Medium     | Low        |
 | Minor    | Low        | Low        |
+
+---STOP---
+**Checkpoint**: Risk assessment complete — ready to produce the final report
+
+> Assessed {N} findings across compute, storage, data transfer, pricing models, and environment management. Risk distribution: {X} Critical, {Y} High, {Z} Medium, {W} Low. Top savings opportunities identified with effort estimates.
+>
+> **Shall I produce the full Cost Optimization report with prioritized remediation plan?**
+
+Do NOT proceed past this point until the user explicitly confirms.
+---
 
 ## Step 10: Produce the report
 

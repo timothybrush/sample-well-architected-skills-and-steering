@@ -5,5 +5,39 @@
   "abstract": "Perform a full AWS Well-Architected Framework review by analyzing code, IaC, and configurations to produce evidence-backed findings with risk assessment and prioritized remediation.",
   "references": [
     "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html"
-  ]
+  ],
+  "triggers": [
+    "full Well-Architected review",
+    "comprehensive architecture review",
+    "all pillars assessment",
+    "WA review",
+    "cross-pillar analysis",
+    "architecture health check",
+    "workload assessment",
+    "Well-Architected Framework evaluation"
+  ],
+  "not_for": [
+    "single-pillar deep-dive when a specific pillar skill exists (use security-assessment, reliability-improvement-plan, cost-optimization-review, performance-efficiency, sustainability-optimization, or operational-excellence instead)",
+    "learning WA concepts or generating visual artifacts (use wa-builder instead)",
+    "creating architecture decision records (use architecture-decision-record instead)",
+    "migration readiness assessment (use migration-readiness instead)"
+  ],
+  "metadata": {
+    "service": [
+      "well-architected"
+    ],
+    "task": [
+      "review",
+      "assess",
+      "audit"
+    ],
+    "persona": [
+      "solutions-architect",
+      "developer",
+      "platform-engineer"
+    ],
+    "workload": [
+      "any"
+    ]
+  }
 }

@@ -1,6 +1,7 @@
 ---
 name: architecture-decision-record
 description: Create or revise Architecture Decision Records by analyzing the codebase to understand current state, affected code paths, constraints from existing patterns, and trade-offs grounded in implementation reality.
+not_for: architecture assessments or reviews, security assessment, migration planning, reliability assessment, learning WA concepts
 version: 2.1.0
 ---
 
@@ -73,6 +74,16 @@ For each non-neutral assessment, you MUST provide:
 - Runbook updates
 - On-call implications
 - Deployment strategy changes
+
+---STOP---
+**Checkpoint**: Options analysis complete — ready to make a recommendation
+
+> Evaluated {N} options for "{decision title}". Compared implementation effort ({files affected, migration steps}), WA pillar impact, and operational implications for each option.
+>
+> **Shall I proceed with identifying trade-offs, assessing risks, and producing the final ADR with a recommendation?**
+
+Do NOT proceed past this point until the user explicitly confirms.
+---
 
 ## Step 4: Identify trade-offs and risks
 

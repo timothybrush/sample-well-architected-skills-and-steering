@@ -1,6 +1,7 @@
 ---
 name: security-assessment
 description: Deep-dive security posture assessment by analyzing IAM policies, encryption configs, network rules, and security controls in code to produce evidence-backed findings aligned with the Well-Architected Security pillar.
+not_for: cost optimization, performance tuning, reliability assessment, migration planning, operational excellence, full cross-pillar WA review
 version: 2.0.0
 ---
 
@@ -87,6 +88,19 @@ You MUST flag as HIGH RISK:
 - Missing VPC endpoints for S3/DynamoDB (traffic going through NAT/internet)
 - No WAF on internet-facing endpoints
 - Overly permissive egress rules (all traffic to all destinations)
+
+---STOP---
+**Checkpoint**: Discovery complete — present findings before evaluation.
+
+> Here is what I discovered about your security posture:
+> - **IAM**: {summary of roles, policies, and access patterns found}
+> - **Encryption**: {summary of encryption-at-rest and in-transit status}
+> - **Network**: {summary of VPC, security groups, WAF configuration}
+>
+> **Shall I proceed with the full security evaluation, or would you like to adjust scope?**
+
+Do NOT proceed past this point until the user explicitly confirms.
+---
 
 ## Step 5: Detection and Response Discovery
 
@@ -183,6 +197,19 @@ For each finding, assess using Impact × Likelihood:
 | Minor    | High       | Medium     |
 | Minor    | Medium     | Low        |
 | Minor    | Low        | Low        |
+
+---STOP---
+**Checkpoint**: Assessment complete — confirm findings before generating report.
+
+> Assessment summary:
+> - **Critical findings**: {count}
+> - **High findings**: {count}
+> - **Medium/Low findings**: {count}
+>
+> **Shall I produce the full security report, or would you like to discuss specific findings first?**
+
+Do NOT proceed past this point until the user explicitly confirms.
+---
 
 ## Step 9: Produce findings
 

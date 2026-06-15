@@ -5,5 +5,47 @@
   "abstract": "Evaluate a workload's performance efficiency against the Well-Architected Performance Efficiency pillar, covering resource selection, scaling, monitoring, and optimization opportunities.",
   "references": [
     "https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/welcome.html"
-  ]
+  ],
+  "triggers": [
+    "performance efficiency review",
+    "latency improvement",
+    "throughput optimization",
+    "resource selection assessment",
+    "scaling configuration review",
+    "caching strategy evaluation",
+    "database performance tuning",
+    "compute optimization",
+    "network performance review",
+    "load testing readiness"
+  ],
+  "not_for": [
+    "security posture or IAM review (use security-assessment instead)",
+    "cost optimization or spend reduction (use cost-optimization-review instead)",
+    "migration planning or 7 Rs (use migration-readiness instead)",
+    "reliability or disaster recovery (use reliability-improvement-plan instead)",
+    "full cross-pillar WA review (use wa-review instead)"
+  ],
+  "metadata": {
+    "service": [
+      "cloudfront",
+      "elasticache",
+      "rds",
+      "lambda",
+      "ec2",
+      "dynamodb"
+    ],
+    "task": [
+      "review",
+      "optimize",
+      "assess"
+    ],
+    "persona": [
+      "solutions-architect",
+      "developer",
+      "sre"
+    ],
+    "workload": [
+      "any"
+    ]
+  }
 }

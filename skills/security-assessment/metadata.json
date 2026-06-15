@@ -5,5 +5,50 @@
   "abstract": "Deep-dive security posture assessment against the Well-Architected Security pillar, covering identity, detection, infrastructure protection, data protection, and incident response.",
   "references": [
     "https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html"
-  ]
+  ],
+  "triggers": [
+    "security posture assessment",
+    "IAM review",
+    "encryption audit",
+    "compliance check",
+    "vulnerability assessment",
+    "network security review",
+    "secrets management audit",
+    "security controls review",
+    "data protection assessment",
+    "incident response readiness"
+  ],
+  "not_for": [
+    "cost optimization or spend analysis",
+    "performance tuning or latency improvement",
+    "reliability or availability assessment",
+    "migration planning or 7 Rs",
+    "operational excellence or CI/CD review",
+    "sustainability or carbon footprint",
+    "full cross-pillar WA review (use wa-review instead)"
+  ],
+  "metadata": {
+    "service": [
+      "iam",
+      "kms",
+      "vpc",
+      "guardduty",
+      "security-hub",
+      "waf",
+      "secrets-manager"
+    ],
+    "task": [
+      "assess",
+      "audit",
+      "review"
+    ],
+    "persona": [
+      "security-engineer",
+      "solutions-architect",
+      "developer"
+    ],
+    "workload": [
+      "any"
+    ]
+  }
 }
