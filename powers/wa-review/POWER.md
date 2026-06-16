@@ -35,3 +35,10 @@ The power includes detailed best-practice reference files that are loaded progre
 - `steering/references/lenses/` — Additional lens-specific best practices (serverless, generative-ai, agentic-ai, responsible-ai, hybrid-networking, migration, devops-guidance)
 
 The agent loads these on demand — you don't need to do anything. During a full review, it works through questions sequentially: quick-scan first, then deep-dives only on questions where gaps are found.
+
+## License and support
+
+This power is licensed under MIT-0.
+
+- [Privacy Policy](https://aws.amazon.com/privacy/)
+- [Support](https://github.com/aws-samples/skills-and-steering-docs/issues)

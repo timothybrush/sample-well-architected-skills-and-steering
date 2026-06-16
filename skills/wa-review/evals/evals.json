@@ -4,83 +4,86 @@
     {
       "id": 1,
       "prompt": "I have a serverless e-commerce app on AWS using API Gateway, Lambda, DynamoDB, S3, and CloudFront. It handles about 10k orders per day. Can you do a Well-Architected review?",
-      "expected_output": "A structured WA review covering all 6 pillars with findings classified by risk level (Critical, High, Medium, Low), specific recommendations with AWS services, and a prioritized remediation plan with Quick Wins, Foundation, and Strategic sections.",
+      "expected_output": "A systematic 307-BP-level Well-Architected review with per-question assessment table (all 57 questions), BP ID citations, pillar scorecard, risk matrix, Eisenhower prioritization, and serverless-specific findings.",
       "assertions": [
-        "The output includes all 6 pillars: Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization, and Sustainability",
-        "Findings are classified by risk level or severity (using terms like Critical, High, Medium, Low, High Risk, or similar severity indicators)",
-        "The output includes a prioritized remediation plan or roadmap with timeframe-based categories",
-        "Recommendations reference specific AWS services",
-        "The review considers the serverless architecture pattern specifically (mentions Lambda, DynamoDB, or serverless best practices)"
+        "The output includes a per-question assessment table covering all 57 WA questions (OPS 1-11, SEC 1-11, REL 1-13, PERF 1-5, COST 1-11, SUS 1-6) with Status and Risk Level columns",
+        "Findings cite specific Best Practice IDs (format like SEC03-BP02, REL06-BP01, COST05-BP03) demonstrating BP-level evaluation",
+        "The output includes a pillar scorecard with numerical scores (1-5) per pillar",
+        "Risk assessment uses Impact x Likelihood matrix producing Critical/High/Medium/Low classifications",
+        "The output includes an Eisenhower-matrix prioritized remediation plan with four quadrants (Do First, Plan, Delegate, Defer)",
+        "Findings include serverless-specific issues referencing Lambda cold starts, DynamoDB capacity modes, API Gateway throttling, or CloudFront caching"
       ],
       "process_assertions": [
-        "Response covers all 6 WA pillars (Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization, Sustainability)",
-        "Response includes an architecture overview or summary",
-        "Findings are grouped by pillar or severity",
-        "A prioritized remediation plan or next steps section is included"
+        "Response covers all 57 questions (not just 5-10 high-level themes)",
+        "Findings are backed by specific BP IDs, not just pillar-level comments",
+        "A prioritized remediation plan using Eisenhower matrix is included",
+        "Architecture overview or discovery summary is presented before evaluation"
       ],
       "knowledge_assertions": [
         {
-          "claim": "Single-region CloudTrail is identified as insufficient for compliance",
-          "source": "AWS Well-Architected Security Pillar - SEC 4",
-          "rationale": "CloudTrail should be enabled in all regions to detect activity in any region"
+          "claim": "Lambda cold start optimization is addressed under PERF",
+          "source": "AWS Well-Architected Performance Efficiency Pillar - PERF 1/PERF 3",
+          "rationale": "Serverless workloads must address cold start latency as a performance concern"
         },
         {
-          "claim": "Developer admin access in dev accounts is flagged as overly permissive",
-          "source": "AWS Well-Architected Security Pillar - SEC 3",
-          "rationale": "Least privilege should apply even in non-production to prevent lateral movement and accidental damage"
+          "claim": "DynamoDB on-demand vs provisioned capacity is evaluated under COST",
+          "source": "AWS Well-Architected Cost Optimization Pillar - COST 7/COST 8",
+          "rationale": "10k orders/day warrants evaluation of capacity mode and pricing model"
         }
       ]
     },
     {
       "id": 2,
-      "prompt": "review my architecture: we have a monolithic Java app on a single EC2 instance, MySQL on RDS single-AZ, no backups configured, SSH access with shared keys, no monitoring besides CloudWatch basic metrics. It's a customer-facing SaaS product.",
-      "expected_output": "A review identifying multiple Critical or High risk findings including single points of failure, lack of backups, shared SSH keys, and minimal monitoring. Should flag this as critically under-architected for a customer-facing SaaS product.",
+      "prompt": "Review my architecture: we have a monolithic Java app on a single EC2 instance, MySQL on RDS single-AZ, no backups configured, SSH access with shared keys, no monitoring besides CloudWatch basic metrics. It's a customer-facing SaaS product.",
+      "expected_output": "A review with 57-question table showing majority 'Not Implemented', BP-level citations for critical gaps, risk matrix showing multiple Critical/High findings, low pillar scores (1-2), and Eisenhower prioritization recognizing business criticality mismatch.",
       "assertions": [
-        "Identifies the single EC2 instance as a critical reliability risk or single point of failure",
-        "Flags the lack of backups as a high-severity finding (Critical, High, or High Risk)",
-        "Flags shared SSH keys as a security finding (any severity level that indicates it's a problem)",
-        "Identifies single-AZ RDS as a reliability gap",
-        "Recommends multi-AZ deployment",
-        "The output includes a summary or executive summary with finding counts or overall assessment",
-        "Recommendations are organized by priority, timeline, or severity"
+        "Per-question assessment table covers all 57 questions with majority marked Not Implemented or Partially Implemented",
+        "BP IDs cited for critical gaps: REL02 (network topology), REL11 (backups), SEC03 (permissions/shared keys), SEC08 (compute protection), OPS06 (observability)",
+        "Risk assessment: single EC2 = Critical (Severe x High), no backups = High (Severe x Medium), shared SSH keys = Critical (Severe x High), single-AZ RDS = High (Severe x Medium)",
+        "Pillar scorecard shows low scores (1-2) across most pillars",
+        "Eisenhower Do First quadrant includes: enable backups, replace SSH keys with SSM/IAM",
+        "Review recognizes business criticality mismatch — customer-facing SaaS with minimal reliability",
+        "Recommendations are organized by Eisenhower quadrant (Do First, Plan, Delegate, Defer)"
       ]
     },
     {
       "id": 3,
       "prompt": "Can you do a quick WA review? We use ECS Fargate with ALB, Aurora PostgreSQL multi-AZ, ElastiCache Redis, CloudFront, WAF, GuardDuty, and deploy via CDK Pipelines with canary deployments. We have CloudWatch dashboards, X-Ray tracing, and automated scaling. Savings Plans are in place.",
-      "expected_output": "A review that acknowledges the architecture is generally well-designed with a high maturity score, identifies mostly Medium or Low risk findings rather than Critical issues, and suggests advanced improvements like chaos engineering, multi-region, or sustainability optimizations.",
+      "expected_output": "A quick review covering all 57 questions at question level with high maturity scores, acknowledging strengths, no manufactured Critical findings, and suggesting only advanced improvements.",
       "assertions": [
-        "Does NOT classify the majority of findings as Critical (the architecture is solid and mature)",
-        "Identifies improvement opportunities or Medium/Low findings rather than fundamental gaps",
-        "Suggests advanced improvements like chaos engineering, multi-region, game days, or DR testing",
-        "Acknowledges existing good practices (canary deployments, multi-AZ, WAF, GuardDuty)",
-        "Covers all 6 pillars including Sustainability"
+        "Per-question assessment covers all 57 questions at question level (quick review mode)",
+        "Pillar scorecard shows high maturity scores (3-5 range)",
+        "Does NOT classify majority of findings as Critical — architecture is solid with multi-AZ, WAF, GuardDuty, canary deployments",
+        "Prominently acknowledges existing strengths: canary deployments, multi-AZ Aurora, WAF, GuardDuty, X-Ray, automated scaling, Savings Plans",
+        "Suggests advanced improvements: chaos engineering, multi-region DR, game days, sustainability, SLA-based alerting",
+        "Includes Eisenhower-matrix or equivalent prioritized remediation plan"
       ]
     },
     {
       "id": 4,
       "prompt": "Review only the Security and Reliability pillars for my workload: API Gateway with Lambda authorizer, DynamoDB with encryption at rest, S3 buckets for user uploads, VPC with public and private subnets, and NAT Gateway. No WAF, no GuardDuty, single-AZ RDS for metadata, no DLQ on SQS.",
-      "expected_output": "A review scoped to ONLY Security and Reliability pillars. Should NOT include findings for Cost, Performance, Sustainability, or Operational Excellence. Should identify WAF absence, no GuardDuty, single-AZ RDS, and missing DLQ as gaps.",
+      "expected_output": "A pillar-scoped review evaluating ONLY Security (SEC 1-11) and Reliability (REL 1-13) with BP citations, without findings for other pillars.",
       "assertions": [
-        "Review is scoped to Security and Reliability only — does NOT produce findings for Cost Optimization, Performance Efficiency, Sustainability, or Operational Excellence",
-        "Flags absence of WAF as a security gap",
-        "Flags absence of GuardDuty or detective controls as a security gap",
-        "Identifies single-AZ RDS as a reliability risk",
-        "Identifies missing DLQ on SQS as a reliability gap",
-        "Produces findings with severity levels for the scoped pillars"
+        "Review is scoped to ONLY Security and Reliability — does NOT produce findings for Cost, Performance, Sustainability, or Operational Excellence",
+        "Per-question table covers the 24 scoped questions (SEC 1-11, REL 1-13) with Status and Risk Level",
+        "BP IDs cited: SEC04 (detective controls/GuardDuty), SEC05 (network protection/WAF), REL10 (fault isolation/single-AZ RDS), and DLQ gap referenced as REL06 or REL07",
+        "Risk assessment: no WAF = Medium, no GuardDuty = Medium, single-AZ RDS = High, no DLQ = High",
+        "Eisenhower prioritization covers only the scoped findings",
+        "Pillar scorecard shows only Security and Reliability scores (not all 6)"
       ]
     },
     {
       "id": 5,
       "prompt": "WA review for our GenAI application: we use Bedrock with Claude for inference, a RAG pipeline with OpenSearch Serverless for vector storage, Lambda for orchestration, S3 for document ingestion, and DynamoDB for conversation history. We have no guardrails, no content filtering, no model evaluation pipeline, and prompts are stored in plaintext in the code.",
-      "expected_output": "A review that covers the core 6 pillars AND additionally applies the Generative AI lens. Should identify missing guardrails, no content filtering, and plaintext prompts as significant findings. Should reference GenAI-specific best practices beyond the standard framework.",
+      "expected_output": "A full review with core 57-question assessment PLUS Generative AI lens applied separately, citing both core BP IDs and GenAI lens references (GENSEC, GENOPS, etc.).",
       "assertions": [
-        "Covers the standard 6 WA pillars (not just GenAI-specific topics)",
-        "Identifies that a Generative AI lens applies and references GenAI-specific best practices",
-        "Flags missing guardrails or content filtering as a finding",
-        "Flags prompts stored in plaintext as a security or operational risk",
-        "Recommends a model evaluation or testing pipeline",
-        "Provides GenAI-specific recommendations (prompt management, model versioning, RAG optimization, or responsible AI practices) beyond standard WA guidance"
+        "Core framework: per-question table covers all 57 WA questions evaluated FIRST before lens",
+        "Lens identification: explicitly identifies Generative AI lens applies and loads lens-specific questions",
+        "BP citations from BOTH core (SEC01, SEC06, OPS04) AND GenAI lens (GENSEC01-06, GENOPS01-05)",
+        "GenAI-specific findings: no guardrails = High, no content filtering = High, no model eval pipeline = Medium, prompts in plaintext = High",
+        "Lens findings in SEPARATE section after core framework findings",
+        "Eisenhower prioritization covers both core and lens findings",
+        "Pillar scorecard for core 6 pillars included"
       ]
     }
   ]
