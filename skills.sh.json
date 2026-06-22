@@ -17,6 +17,11 @@
         "operational-excellence",
         "sustainability-optimization"
       ]
+    },
+    {
+      "title": "Enforcement & Governance",
+      "description": "Codify best practices as ongoing controls that keep a workload aligned with Well-Architected guidance over time.",
+      "skills": ["wa-guardrails"]
     }
   ]
 }
