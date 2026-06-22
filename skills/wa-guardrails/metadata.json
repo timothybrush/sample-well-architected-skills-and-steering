@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "organization": "AWS",
   "date": "June 2026",
-  "abstract": "Generate preventive and detective Well-Architected guardrails — AWS Config rules, Service Control Policies, permission boundaries, CloudWatch alarms, and IaC policy checks (CDK Aspects, cfn-guard, OPA/Sentinel) — so a workload stays compliant over time instead of being assessed once.",
+  "abstract": "Generate preventive and detective Well-Architected guardrails — AWS Config rules, Service Control Policies, permission boundaries, CloudWatch alarms, and IaC policy checks (CDK Aspects, cfn-guard, OPA/Sentinel) — so a workload stays aligned with Well-Architected best practices over time instead of being assessed once.",
   "references": [
     "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
     "https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_use-managed-rules.html",
@@ -12,7 +12,7 @@
     "enforce Well-Architected best practices",
     "generate AWS Config rules",
     "prevent insecure configurations",
-    "continuous compliance controls",
+    "continuous alignment with best practices",
     "configuration drift detection",
     "service control policies",
     "CI policy checks for IaC",

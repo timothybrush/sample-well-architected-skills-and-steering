@@ -1,4 +1,4 @@
-Generate preventive Well-Architected guardrails — AWS Config rules, Service Control Policies, permission boundaries, CloudWatch alarms, and IaC policy checks (CDK Aspects, cfn-guard, OPA/Sentinel) — so a workload stays compliant over time instead of being assessed once.
+Generate preventive Well-Architected guardrails — AWS Config rules, Service Control Policies, permission boundaries, CloudWatch alarms, and IaC policy checks (CDK Aspects, cfn-guard, OPA/Sentinel) — so a workload stays aligned with Well-Architected best practices over time instead of being assessed once.
 
 Unlike the assessment commands (which find gaps) or one-off remediation (which fixes a single finding), guardrails codify best practices so non-compliant changes are blocked or flagged automatically — in CI, at deploy time, and continuously in the account.
 

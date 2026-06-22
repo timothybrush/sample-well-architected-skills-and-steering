@@ -46,7 +46,7 @@ skills/                             Step-by-step playbooks (tool-agnostic)
   migration-readiness/                7 Rs assessment with migration plan
   architecture-decision-record/       WA-aligned ADRs with pillar impact
   wa-builder/                         Learn WA + produce visual artifacts (diagrams, trees, roadmaps)
-  wa-guardrails/                      Preventive controls (Config rules, SCPs, CI checks) for ongoing compliance
+  wa-guardrails/                      Preventive controls (Config rules, SCPs, CI checks) for ongoing adherence to WA guidance
 
 examples/                           Sample IaC with planted WA issues (for demos and eval fixtures)
   insecure-serverless-app-cdk/        CDK TypeScript — ~20 issues across all 6 pillars
@@ -544,7 +544,7 @@ graph LR
 | `migration-readiness` | All 6 | Assess readiness to migrate a workload to AWS |
 | `architecture-decision-record` | All 6 | Document a design decision with WA pillar impact |
 | `wa-builder` | All 6 | Learn WA for your project + produce visual artifacts (diagrams, decision trees, roadmaps) |
-| `wa-guardrails` | All 6 | Generate preventive controls (Config rules, SCPs, CI checks, alarms) for ongoing compliance |
+| `wa-guardrails` | All 6 | Generate preventive controls (Config rules, SCPs, CI checks, alarms) for ongoing adherence to WA guidance |
 
 ---
 
