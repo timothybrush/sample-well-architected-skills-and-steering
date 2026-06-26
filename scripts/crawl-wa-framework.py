@@ -451,20 +451,33 @@ def discover_leaf_pages(toc_json: dict, pillar_sections: list[str] | None = None
     Returns a list of dicts with keys: section, title, href.
     """
     results = []
-    target_sections = pillar_sections or [
+    # Pillar names we want as section buckets. The generic "Pillars of the
+    # Well-Architected Framework" wrapper is intentionally NOT here — it's a
+    # container above the real pillars, not a bucket itself.
+    pillar_names = pillar_sections or [
         "Operational excellence", "Security", "Reliability",
         "Performance efficiency", "Cost optimization", "Sustainability",
-        "Pillars of the Well-Architected Framework",
     ]
+
+    def matches_pillar(title):
+        tl = title.lower()
+        return next((p for p in pillar_names if p.lower() in tl), None)
 
     def walk(contents, section=None, depth=0):
         for item in contents:
             title = item.get("title", "")
             href = item.get("href", "")
 
-            # Check if this node is a pillar section header we should track
-            is_section = any(t.lower() in title.lower() for t in target_sections)
-            current_section = title if is_section else section
+            # Adopt a pillar name as the section bucket, but only the FIRST
+            # (shallowest) pillar match wins — so a deeper numbered question
+            # that repeats a pillar keyword (e.g. the analytics lens's
+            # "15 - Sustainability implementation guidance" under the
+            # "Sustainability" pillar) can't overwrite the clean pillar name.
+            matched = matches_pillar(title)
+            if matched and section is None:
+                current_section = matched
+            else:
+                current_section = section
 
             if "contents" in item:
                 # Branch node — recurse deeper, passing along the current section context

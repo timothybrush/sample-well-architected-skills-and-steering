@@ -177,6 +177,7 @@ Available lenses:
 - `references/lenses/migration/` — Assess, Mobilize, Migrate phases per pillar
 - `references/lenses/devops-guidance/` — CI/CD, automated governance, development lifecycle, observability, security testing
 - `references/lenses/machine-learning/` — ML lifecycle (MLOPS), model training/deployment, data engineering, responsible ML
+- `references/lenses/data-analytics/` — data pipelines, governance, data catalogs, lineage, analytics performance and cost
 
 ## Step 5: Risk Assessment
 
