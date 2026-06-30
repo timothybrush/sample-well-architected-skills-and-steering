@@ -181,6 +181,11 @@ Available lenses:
 - `references/lenses/games-industry/` — game backends, real-time multiplayer, player data, live operations
 - `references/lenses/saas/` — multi-tenancy, tenant isolation, onboarding, metering, tiering
 - `references/lenses/financial-services/` — regulatory compliance, data residency, resilience, auditability for FSI workloads
+- `references/lenses/life-sciences/` — GxP, validated systems, clinical/research data, regulatory compliance
+- `references/lenses/end-user-computing/` — virtual desktops/apps, streaming, identity, endpoint delivery
+- `references/lenses/supply-chain/` — supply chain data, integration, traceability, resilience
+- `references/lenses/video-streaming-advertising/` — video pipelines, streaming delivery, ad tech, monetization
+- `references/lenses/telco/` — telecom network workloads, 5G/edge, OSS/BSS, carrier-grade reliability
 
 ## Step 5: Risk Assessment
 
