@@ -133,6 +133,17 @@ def call_model(client, model_id: str, messages: list[dict], system: str | None =
     }
 
 
+def compute_cost(result: dict, pricing: dict) -> float | None:
+    """Compute cost in USD for a single model invocation. Returns None if pricing unavailable."""
+    model_id = result["model_id"]
+    if model_id not in pricing or "error" in result:
+        return None
+    rates = pricing[model_id]
+    input_cost = (result["input_tokens"] / 1_000_000) * rates["input"]
+    output_cost = (result["output_tokens"] / 1_000_000) * rates["output"]
+    return round(input_cost + output_cost, 6)
+
+
 def grade_output(client, grading_model: str, prompt: str, output: str,
                  criteria: list[str], region: str) -> dict:
     """Use an LLM judge to score the output against criteria."""
@@ -234,6 +245,13 @@ def run_benchmark(config: dict, models: list[str], grade: bool = False) -> dict:
     # Sort by model_id for consistent output
     results.sort(key=lambda r: r["model_id"])
 
+    # Compute cost per invocation
+    pricing = config.get("pricing", {})
+    for r in results:
+        cost = compute_cost(r, pricing)
+        if cost is not None:
+            r["cost_usd"] = cost
+
     # Optional grading pass
     if grade and config.get("grading"):
         grading_model = config["grading"]["model"]
@@ -263,19 +281,32 @@ def run_benchmark(config: dict, models: list[str], grade: bool = False) -> dict:
 def print_summary(benchmark: dict):
     """Print a comparison table."""
     results = benchmark["results"]
-    print("\n" + "=" * 90)
-    print(f"{'Model':<45} {'In Tok':>7} {'Out Tok':>8} {'Latency':>8} {'Tok/s':>7} {'Grade':>6}")
-    print("-" * 90)
+    has_cost = any("cost_usd" in r for r in results)
+    width = 100 if has_cost else 90
+    print("\n" + "=" * width)
+    header = f"{'Model':<45} {'In Tok':>7} {'Out Tok':>8} {'Latency':>8} {'Tok/s':>7} {'Grade':>6}"
+    if has_cost:
+        header += f" {'Cost':>8}"
+    print(header)
+    print("-" * width)
     for r in sorted(results, key=lambda x: x.get("latency_s", 999)):
         if "error" in r:
-            print(f"{r['model_id']:<45} {'ERROR':>7} {'':<8} {r['latency_s']:>7.1f}s {'':<7} {'—':>6}")
+            line = f"{r['model_id']:<45} {'ERROR':>7} {'':<8} {r['latency_s']:>7.1f}s {'':<7} {'—':>6}"
+            if has_cost:
+                line += f" {'—':>8}"
+            print(line)
             continue
         grade_str = "—"
         if "grade" in r and "overall" in r.get("grade", {}):
             grade_str = f"{r['grade']['overall']:.1f}"
-        print(f"{r['model_id']:<45} {r['input_tokens']:>7,} {r['output_tokens']:>8,} "
-              f"{r['latency_s']:>7.1f}s {r['tokens_per_sec']:>6.0f} {grade_str:>6}")
-    print("=" * 90)
+        line = (f"{r['model_id']:<45} {r['input_tokens']:>7,} {r['output_tokens']:>8,} "
+                f"{r['latency_s']:>7.1f}s {r['tokens_per_sec']:>6.0f} {grade_str:>6}")
+        if has_cost:
+            cost = r.get("cost_usd")
+            cost_str = f"${cost:.4f}" if cost is not None else "—"
+            line += f" {cost_str:>8}"
+        print(line)
+    print("=" * width)
 
 
 def main():

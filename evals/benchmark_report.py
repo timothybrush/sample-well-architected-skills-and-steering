@@ -52,10 +52,14 @@ def generate_markdown(benchmark: dict) -> str:
     lines.append(f"")
 
     has_grades = any("grade" in r and "overall" in r.get("grade", {}) for r in results)
+    has_cost = any("cost_usd" in r for r in results)
 
     # Header
     header = "| Model | Input Tokens | Output Tokens | Latency (s) | Tokens/s |"
     separator = "|-------|-------------:|--------------:|------------:|---------:|"
+    if has_cost:
+        header += " Cost |"
+        separator += "------:|"
     if has_grades:
         header += " Quality |"
         separator += "--------:|"
@@ -73,6 +77,8 @@ def generate_markdown(benchmark: dict) -> str:
         name = format_model_name(r["model_id"])
         if "error" in r:
             row = f"| {name} | — | — | {r['latency_s']:.1f} | — |"
+            if has_cost:
+                row += " — |"
             if has_grades:
                 row += " — |"
             lines.append(row)
@@ -80,6 +86,9 @@ def generate_markdown(benchmark: dict) -> str:
 
         row = (f"| {name} | {r['input_tokens']:,} | {r['output_tokens']:,} | "
                f"{r['latency_s']:.1f} | {r['tokens_per_sec']:.0f} |")
+        if has_cost:
+            cost = r.get("cost_usd")
+            row += f" ${cost:.4f} |" if cost is not None else " — |"
         if has_grades:
             grade = r.get("grade", {}).get("overall")
             row += f" {grade:.1f}/5 |" if grade else " — |"

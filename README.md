@@ -775,19 +775,19 @@ Compare how different foundation models perform on Well-Architected review tasks
 <!-- BENCHMARK-START -->
 ### Model Benchmark Results
 
-**Last run:** 2026-07-01T11:48:24Z | **Region:** us-east-1 | **Prompt:** 1,595 chars | **Max tokens:** 4,096
+**Last run:** 2026-07-01T12:07:35Z | **Region:** us-east-1 | **Prompt:** 1,595 chars | **Max tokens:** 4,096
 
-| Model | Input Tokens | Output Tokens | Latency (s) | Tokens/s | Quality |
-|-------|-------------:|--------------:|------------:|---------:|--------:|
-| claude-sonnet-5 | 793 | 4,096 | 44.1 | 93 | 5.0/5 |
-| r1 | 517 | 1,559 | 11.0 | 142 | 4.8/5 |
-| nova-2-lite | 512 | 1,553 | 7.8 | 198 | 3.9/5 |
-| llama4-maverick-17b-instruct | 503 | 1,051 | 5.1 | 207 | 3.6/5 |
-| nova-pro | 549 | 1,067 | 5.6 | 190 | 3.6/5 |
-| pixtral-large-2502 | 620 | 2,741 | 33.2 | 83 | 3.6/5 |
-| llama3-3-70b-instruct | 505 | 1,255 | 13.4 | 93 | 3.4/5 |
-| claude-haiku-4-5-20251001 | 587 | 4,096 | 22.0 | 186 | 3.3/5 |
-| nova-lite | 549 | 1,603 | 10.2 | 157 | 2.5/5 |
+| Model | Input Tokens | Output Tokens | Latency (s) | Tokens/s | Cost | Quality |
+|-------|-------------:|--------------:|------------:|---------:|------:|--------:|
+| claude-sonnet-5 | 793 | 3,983 | 41.8 | 95 | $0.0621 | 5.0/5 |
+| r1 | 517 | 1,566 | 11.0 | 142 | $0.0092 | 4.8/5 |
+| nova-2-lite | 512 | 1,431 | 8.0 | 179 | $0.0002 | 4.2/5 |
+| pixtral-large-2502 | 620 | 1,565 | 19.1 | 82 | $0.0106 | 3.8/5 |
+| claude-haiku-4-5-20251001 | 587 | 4,096 | 21.6 | 190 | $0.0169 | 3.8/5 |
+| nova-pro | 549 | 1,316 | 9.1 | 145 | $0.0046 | 3.6/5 |
+| llama4-maverick-17b-instruct | 503 | 985 | 5.4 | 182 | $0.0005 | 3.5/5 |
+| llama3-3-70b-instruct | 505 | 1,133 | 9.9 | 114 | $0.0012 | 3.3/5 |
+| nova-lite | 549 | 1,739 | 9.2 | 189 | $0.0004 | 2.3/5 |
 
 <details><summary>Benchmark details</summary>
 
