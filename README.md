@@ -583,9 +583,9 @@ The `wa-review` skill includes **307 best practices** across **57 framework ques
 | Connected Mobility Lens | 6 | 284 KB | Connected vehicles, telematics, fleet data, automotive platforms |
 | Healthcare Industry Lens | 6 | 92 KB | HIPAA, clinical data, interoperability, patient privacy |
 | Container Build Lens | 6 | 76 KB | Container image builds, supply chain security, registries, CI/CD |
-| High Performance Computing Lens | 6 | 104 KB | HPC clusters, parallel workloads, scheduling, low-latency networking |
+| High Performance Computing Lens | 23 | 104 KB | HPC clusters, parallel workloads, scheduling, low-latency networking |
 | Streaming Media Lens | 6 | 96 KB | Media streaming, live/VOD delivery, encoding, content workflows |
-| IoT Lens | 6 | 369 KB | IoT devices, telemetry, edge computing, fleet provisioning, OTA updates |
+| IoT Lens | 59 | 369 KB | IoT devices, telemetry, edge computing, fleet provisioning, OTA updates |
 | Government Lens | 6 | 46 KB | Public sector, privacy-by-design, compliance, real-time security |
 
 ### Token strategies
