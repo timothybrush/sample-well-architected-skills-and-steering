@@ -9,7 +9,7 @@ Reusable skills and steering that teach AI coding agents how to apply the [AWS W
 </div>
 
 > [!IMPORTANT]
-> This sample is provided for educational and demonstrative purposes. It is not intended for production use without additional review and testing appropriate to your environment.
+> This sample is provided for educational and demonstrative purposes. It is not intended for production use without additional review and testing appropriate to your environment. Reference content is current as of the download date — keeping it up to date is the responsibility of the user.
 
 ---
 
