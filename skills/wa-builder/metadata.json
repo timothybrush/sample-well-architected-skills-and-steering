@@ -1,8 +1,8 @@
 {
-  "version": "1.0.0",
+  "version": "2.0.0",
   "organization": "AWS",
-  "date": "June 2026",
-  "abstract": "Learn then Build \u2014 help developers understand Well-Architected for their workload and produce visual artifacts (annotated architecture diagrams, decision trees, improvement roadmaps) they can commit and use.",
+  "date": "July 2026",
+  "abstract": "Learn then Build — help developers understand Well-Architected for their workload and produce visual artifacts (annotated architecture diagrams, decision trees, improvement roadmaps). Also creates Architecture Decision Records grounded in codebase analysis.",
   "references": [
     "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html"
   ],
@@ -16,14 +16,19 @@
     "understand Well-Architected for my project",
     "visual architecture artifacts",
     "WA learning path",
-    "generate architecture diagram"
+    "generate architecture diagram",
+    "create an ADR",
+    "architecture decision record",
+    "document a design decision",
+    "evaluate architectural options",
+    "trade-off analysis between options",
+    "record our architecture choice"
   ],
   "not_for": [
-    "assessments or reviews that produce findings (use wa-review or a specific pillar skill instead)",
-    "security posture assessment (use security-assessment instead)",
+    "assessments or reviews that produce findings (use wa-review instead)",
     "migration planning (use migration-readiness instead)",
-    "architecture decision records (use architecture-decision-record instead)",
-    "cost or performance deep-dives (use the specific pillar skill instead)"
+    "generating guardrails or enforcement controls (use wa-guardrails instead)",
+    "facilitating a conversational WAFR (use wafr-facilitator instead)"
   ],
   "metadata": {
     "service": [
@@ -32,12 +37,15 @@
     "task": [
       "learn",
       "visualize",
-      "diagram"
+      "diagram",
+      "document",
+      "decide"
     ],
     "persona": [
       "developer",
       "solutions-architect",
-      "student"
+      "student",
+      "tech-lead"
     ],
     "workload": [
       "any"

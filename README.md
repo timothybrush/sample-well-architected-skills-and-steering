@@ -34,19 +34,14 @@ steering/                           Always-on context (Kiro)
   wa-review.md                        Deep multi-step WA review (evidence-based, constrained)
 
 skills/                             Step-by-step playbooks (tool-agnostic)
-  wa-review/                          Full review across all 6 pillars
+  wa-review/                          Full or pillar-scoped review (all 6 pillars + 27 lenses)
     references/questions/               57 per-question BP-level reference files (307 BPs)
-    references/lenses/                  Lens-specific references (serverless, gen AI, agentic, etc.)
-  security-assessment/                IAM, detection, data protection, incident response
-  reliability-improvement-plan/       SPOFs, recovery, scaling, change management
-  cost-optimization-review/            Waste, right-sizing, pricing models
-  performance-efficiency/             Resource selection, scaling, caching
-  sustainability-optimization/        Utilization, managed services, data lifecycle
-  operational-excellence/             CI/CD, observability, incidents, automation
+    references/lenses/                  Lens-specific references (27 lenses)
+    references/pillar-playbooks/        Per-pillar deep-dive discovery procedures
+  wa-builder/                         Learn WA + produce artifacts (diagrams, trees, roadmaps, ADRs)
+  wa-guardrails/                      Preventive controls (Config rules, SCPs, CI checks)
+  wafr-facilitator/                   Conversational WAFR facilitation with customers
   migration-readiness/                7 Rs assessment with migration plan
-  architecture-decision-record/       WA-aligned ADRs with pillar impact
-  wa-builder/                         Learn WA + produce visual artifacts (diagrams, trees, roadmaps)
-  wa-guardrails/                      Preventive controls (Config rules, SCPs, CI checks) for ongoing adherence to WA guidance
 
 examples/                           Sample IaC with planted WA issues (for demos and eval fixtures)
   insecure-serverless-app-cdk/        CDK TypeScript — ~20 issues across all 6 pillars
@@ -537,17 +532,23 @@ graph LR
 
 | Skill | Pillar(s) | Use when you need to... |
 | ----- | --------- | ----------------------- |
-| `wa-review` | All 6 | Run a full Well-Architected review |
-| `security-assessment` | 🔒 Security | Assess IAM, detection, data protection, incident response |
-| `reliability-improvement-plan` | 🔄 Reliability | Find and eliminate single points of failure |
-| `cost-optimization-review` | 💰 Cost Optimization | Identify waste and right-sizing opportunities |
-| `performance-efficiency` | ⚡ Performance Efficiency | Evaluate resource selection, scaling, and caching |
-| `sustainability-optimization` | 🌱 Sustainability | Reduce carbon footprint and resource waste |
-| `operational-excellence` | 🛠️ Operational Excellence | Assess CI/CD, observability, incident management |
+| `wa-review` | All 6 | Full or pillar-scoped WA assessment with BP-level citations |
+| `wa-builder` | All 6 | Learn WA + produce artifacts (diagrams, decision trees, roadmaps, ADRs) |
+| `wa-guardrails` | All 6 | Generate preventive controls (Config rules, SCPs, CI checks, alarms) |
+| `wafr-facilitator` | All 6 | Prepare conversational WAFR facilitation with customers |
 | `migration-readiness` | All 6 | Assess readiness to migrate a workload to AWS |
-| `architecture-decision-record` | All 6 | Document a design decision with WA pillar impact |
-| `wa-builder` | All 6 | Learn WA for your project + produce visual artifacts (diagrams, decision trees, roadmaps) |
-| `wa-guardrails` | All 6 | Generate preventive controls (Config rules, SCPs, CI checks, alarms) for ongoing adherence to WA guidance |
+
+**Pillar aliases** (route to `wa-review` with pillar scope):
+
+| Command | Scope |
+|---------|-------|
+| `security-assessment` | Security pillar deep-dive |
+| `reliability-improvement-plan` | Reliability pillar deep-dive |
+| `cost-optimization-review` | Cost Optimization pillar deep-dive |
+| `performance-efficiency` | Performance Efficiency pillar deep-dive |
+| `sustainability-optimization` | Sustainability pillar deep-dive |
+| `operational-excellence` | Operational Excellence pillar deep-dive |
+| `architecture-decision-record` | wa-builder ADR mode |
 
 ---
 
@@ -763,19 +764,13 @@ All skills are evaluated using an automated LLM-as-judge framework with paired c
 | Skill | Baseline | With Skill | Delta |
 |-------|----------|-----------|-------|
 | `wa-review` | 82% | **100%** | +18% |
-| `architecture-decision-record` | 81% | **100%** | +19% |
-| `cost-optimization-review` | 93% | **100%** | +7% |
-| `migration-readiness` | 85% | **100%** | +15% |
-| `operational-excellence` | 90% | **100%** | +10% |
-| `performance-efficiency` | 90% | **100%** | +10% |
-| `reliability-improvement-plan` | 95% | **100%** | +5% |
-| `security-assessment` | 94% | **100%** | +6% |
-| `sustainability-optimization` | 85% | **100%** | +15% |
 | `wa-builder` | 61% | **94%** | +33% |
 | `wa-guardrails` | 76% | **99%** | +23% |
-| **Average** | **85%** | **99%** | **+15%** |
+| `wafr-facilitator` | 61% | **97%** | +35% |
+| `migration-readiness` | 85% | **100%** | +15% |
+| **Average** | **73%** | **98%** | **+25%** |
 
-- **9 of 11 skills** score 100% on behavioral assertions; `wa-builder` scores 94% and `wa-guardrails` 99%
+- **Pillar-scoped** reviews (security, reliability, cost, performance, sustainability, ops) are now handled by `wa-review` with domain-specific playbooks — same BP-level depth, unified entry point
 - **Average +15% improvement** over the same model without skill guidance
 - Skills never produce worse output than baseline — they improve or match
 

@@ -105,11 +105,20 @@ Before starting the evaluation, determine the review depth based on the user's r
 - Flag obvious gaps but do not exhaustively check every BP
 - Faster, less detailed, still covers all pillars
 
-**Pillar-scoped review** (when user asks for specific pillars, e.g., "review security and reliability only"):
+**Pillar-scoped review** (when user asks for specific pillars, e.g., "review security and reliability only", "assess my security", "identify single points of failure", "optimize our costs"):
 - Evaluate ONLY the questions for the requested pillars
+- Load `references/pillar-playbooks/{pillar}.md` to apply domain-specific discovery steps (specialized evidence collection beyond generic infrastructure scan)
 - Apply full-review depth (load BP reference files) for those pillars
 - Skip all other pillars entirely — do not comment on them unless a critical cross-pillar issue is obvious
-- Still produce the same report format but only for the scoped pillars
+- Produce a pillar-focused report with domain-specific scorecard (e.g., Security: 6-domain scorecard; Reliability: SPOF table + testing plan)
+
+Trigger phrases that indicate pillar-scoped review:
+- Security: "security assessment", "IAM review", "encryption audit", "assess my security posture"
+- Reliability: "reliability plan", "identify SPOFs", "assess disaster recovery", "fault tolerance review"
+- Cost: "cost optimization", "right-sizing review", "reduce AWS spend", "cost assessment"
+- Performance: "performance assessment", "latency analysis", "bottleneck identification"
+- Sustainability: "sustainability review", "carbon footprint", "resource efficiency audit"
+- Operational Excellence: "operational assessment", "CI/CD review", "observability audit"
 
 If unclear, ask:
 

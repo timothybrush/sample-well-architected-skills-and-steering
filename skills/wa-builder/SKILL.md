@@ -1,7 +1,7 @@
 ---
 name: wa-builder
 description: "Learn then Build" — help developers understand AWS Well-Architected best practices for their specific workload, then produce actionable visual artifacts (architecture diagrams with WA annotations, decision trees, improvement roadmaps) they can commit and use. Adapts explanations for beginners and generates artifacts faster for experienced builders. Use when the user wants to understand WA for their project, create architecture diagrams with pillar health overlays, get guided decision flows for architectural choices, or generate a visual improvement roadmap.
-not_for: assessments or reviews that produce findings, security assessment, migration planning, architecture decision records, cost or performance deep-dives
+not_for: assessments or reviews that produce findings (use wa-review), migration planning (use migration-readiness), generating guardrails (use wa-guardrails), facilitating a WAFR (use wafr-facilitator)
 version: 1.0.0
 ---
 
@@ -301,6 +301,107 @@ Would you like me to:
 - **Create an ADR** for a decision you've made from the tree?
 - **Run a full /wa-review** for precise per-BP scoring?
 ```
+
+## Mode: Architecture Decision Record
+
+When the user asks to "create an ADR", "document a design decision", "evaluate architectural options", or "trade-off analysis", switch to ADR mode. ADRs are grounded in codebase analysis — they document decisions with implementation evidence.
+
+### ADR Step 1: Understand the decision
+
+> What architecture decision do you need to document?
+> - **Decision title** (e.g., "Switch from SQS to EventBridge for event routing")
+> - **Context** — What problem are you solving?
+> - **Options considered** (at least 2) — or ask me to suggest alternatives
+
+### ADR Step 2: Current state discovery
+
+Analyze the codebase to document:
+- **Current implementation**: what exists today with file paths and line numbers
+- **Affected code**: every file that changes for each option (quantify)
+- **Integration points**: interfaces, APIs, contracts each option must satisfy
+- **Constraints**: language, framework, patterns that limit options
+- **Dependencies**: other services/components depending on current implementation
+
+### ADR Step 3: Evaluate options with evidence
+
+For each option, provide:
+- **Files affected** (list specific paths)
+- **New dependencies** introduced
+- **Migration steps** required
+- **Effort** (specific, with basis — not T-shirt sizes)
+- **WA pillar impact** table (only non-neutral pillars, with evidence)
+- **Operational impact** (monitoring, runbooks, on-call changes)
+
+---STOP---
+Present options analysis. Do NOT proceed to recommendation without confirmation.
+---
+
+### ADR Step 4: Trade-offs and risks
+
+For the recommended option:
+- **What you gain** — with evidence from THIS workload
+- **What you give up** — honest assessment
+- **What could go wrong** — specific risks + mitigations
+- **Reversibility** — how hard to undo, what's the escape hatch
+
+For rejected options:
+- Primary rejection reason (one sentence)
+- Under what future condition it becomes better (specific trigger)
+
+### ADR Step 5: Produce the ADR
+
+```markdown
+# ADR-{number}: {Decision Title}
+
+## Status
+{Proposed | Accepted | Deprecated | Superseded by ADR-X}
+
+## Date
+{YYYY-MM-DD}
+
+## Context
+### Problem Statement
+{What problem? Why now?}
+### Current State
+{File paths and code references}
+### Constraints
+{Derived from codebase — not assumptions}
+### Decision Drivers
+{Ordered by priority}
+
+## Decision
+{One clear statement.}
+
+## Options Evaluated
+### Option 1: {name} ← Chosen
+- **Pros/Cons/Files affected/Migration/Effort**
+### Option 2: {name} — Rejected
+- **Pros/Cons/Would choose this if**: {trigger}
+
+## Well-Architected Impact
+| Pillar | Impact | Evidence |
+{Only non-neutral pillars}
+
+## Trade-offs
+### What We Gain / What We Accept / Risks
+
+## Implementation
+### Migration Path
+### Rollback Plan
+### Verification
+
+## Review Triggers
+{Specific, measurable: metric > threshold, event occurs, time passes}
+```
+
+### ADR Calibration
+- An ADR is a decision log, not a sales pitch — document REAL trade-offs
+- Code evidence grounds the decision ("affects 3 files" > "low effort")
+- Review triggers with specific thresholds make ADRs useful 6 months later
+- Reversibility is critical — irreversible decisions deserve more analysis
+- Don't pad the WA pillar table — only real, non-obvious impact
+
+---
 
 ## Calibration Guidance
 
