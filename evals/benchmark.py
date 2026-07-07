@@ -52,7 +52,7 @@ def _extract_text(response: dict) -> str:
     return "\n".join(text_parts)
 
 
-MANTLE_MODELS = {"openai.gpt-5.5", "openai.gpt-5.4"}
+MANTLE_MODELS = {"openai.gpt-5.5", "openai.gpt-5.4", "openai.gpt-oss-120b", "openai.gpt-oss-20b"}
 
 
 def _is_mantle_model(model_id: str) -> bool:
