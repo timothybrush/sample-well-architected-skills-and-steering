@@ -27,6 +27,9 @@ models:
 
 # Generation settings
 max_tokens: 4096
+# Temperature 0 for reproducibility (deterministic baseline). Most coding agents
+# use temperature 1 in production — thinking models (Sonnet 5, DeepSeek R1) ignore
+# temperature anyway. Use --temperature to override for real-world comparison.
 temperature: 0
 concurrency: 4
 
