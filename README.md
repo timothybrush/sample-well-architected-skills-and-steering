@@ -795,14 +795,42 @@ Compare how different foundation models perform on Well-Architected review tasks
 | claude-haiku-4-5-20251001 | 587 | 4,096 | 24.9 | 164 | $0.0169 | 3.3/5 |
 | nova-lite | 549 | 1,667 | 19.0 | 88 | $0.0004 | 3.2/5 |
 
-<details><summary>Benchmark details</summary>
+**Key takeaways:**
+- **Best quality:** Claude Sonnet 5 (5.0/5) — confirmed by independent cross-family judges
+- **Best value:** GPT OSS 120B (4.8/5, 180 tok/s) — open-weight, tied 2nd with Pixtral Large
+- **Best quality/latency:** DeepSeek R1 (4.5/5 in 10.7s) — strong output at low latency
+- **Cheapest usable:** Nova 2 Lite (4.3/5 at $0.0003/call) — 190x cheaper than Sonnet 5
+- **GPT-5.5 (4.1/5)** underperforms its open-weight sibling GPT OSS 120B at higher cost
 
-- Task: Well-Architected review of an e-commerce Terraform architecture
-- Temperature: 0
-- Models tested: 11
-- Quality graded by: 3-judge panel (Claude Sonnet 4.6, DeepSeek R1, GPT OSS 120B) — no self-grading (a model is never judged by its own provider family)
-- Criteria: coverage of 6 pillars, identification of key risks, actionability
-- Run with: `cd evals && python benchmark.py --grade`
+<details><summary>Benchmark methodology</summary>
+
+- **Task:** Well-Architected review of an e-commerce Terraform architecture (ECS Fargate, RDS, CloudFront, Redis)
+- **Temperature:** 0
+- **Models tested:** 11 across 6 providers (Anthropic, Amazon, DeepSeek, Meta, Mistral, OpenAI)
+- **Quality grading:** 3-judge panel with **no self-grading** — a model is never judged by its own provider family
+- **Judges:** Claude Sonnet 4.6, DeepSeek R1, GPT OSS 120B
+- **Criteria:** coverage of all 6 WA pillars, identification of key risks, actionability of recommendations
+- **Run with:** `cd evals && python benchmark.py --grade`
+
+</details>
+
+<details><summary>Per-judge scores (transparency)</summary>
+
+| Model | Claude Sonnet 4.6 | DeepSeek R1 | GPT OSS 120B | Average |
+|-------|:-----------------:|:-----------:|:------------:|:-------:|
+| claude-sonnet-5 | — (same family) | 5.0 | 5.0 | **5.0** |
+| gpt-oss-120b | 4.9 | 4.8 | — (same family) | **4.8** |
+| pixtral-large-2502 | 4.6 | 5.0 | 4.9 | **4.8** |
+| deepseek-r1 | 4.5 | — (same family) | 4.5 | **4.5** |
+| llama4-maverick | 3.8 | 4.5 | 4.6 | **4.3** |
+| nova-2-lite | 4.0 | 4.4 | 4.6 | **4.3** |
+| gpt-5.5 | 4.1 | 4.1 | — (same family) | **4.1** |
+| nova-pro | 3.5 | 4.3 | 4.4 | **4.1** |
+| llama3-3-70b | 2.9 | 3.5 | 3.5 | **3.3** |
+| claude-haiku-4.5 | — (same family) | 3.4 | 3.3 | **3.3** |
+| nova-lite | 2.6 | 3.5 | 3.4 | **3.2** |
+
+*"— (same family)" means that judge was excluded to prevent self-grading bias.*
 
 </details>
 <!-- BENCHMARK-END -->
