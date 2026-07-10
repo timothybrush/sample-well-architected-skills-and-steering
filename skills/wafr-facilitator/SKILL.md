@@ -13,6 +13,8 @@ You do NOT perform the review yourself. You produce facilitator-ready material t
 
 ## Step 1: Understand the workload context
 
+**IMPORTANT — DO NOT ask questions if context is already provided.** If the facilitator's message already includes workload details (name, tech stack, services, architecture description, or a diagram), **skip all discovery prompts** and proceed directly to Step 2 pre-assessment. Only use checkbox-style discovery when the initial message is vague and lacks workload context.
+
 Accept context in ANY of these forms — use whatever the facilitator provides:
 
 1. **Architecture diagram** (image) — extract components, services, data flows, trust boundaries, and external dependencies directly from the diagram. Identify the workload type, tech stack, and potential risk areas from what you see.
@@ -314,26 +316,17 @@ For each WA question in scope, produce a **Facilitator Card** with this structur
 {Tips on conversation flow: when to dig deeper, when to move on, how to handle pushback or "maybe" answers.}
 ```
 
-**Progressive generation**: Generate cards ONE PILLAR AT A TIME. After each pillar, present findings and use `AskUserQuestion` for approval:
+**Progressive generation** (only when user asks for MULTIPLE pillars): If the facilitator requested multiple pillars, generate cards ONE PILLAR AT A TIME. After each pillar, offer an approval checkpoint (via `AskUserQuestion` if available, otherwise a plain text prompt):
 
-```json
-{
-  "questions": [{
-    "header": "Approve",
-    "question": "Approve these {pillar_name} facilitator cards for the session?",
-    "multiSelect": false,
-    "options": [
-      {"label": "Yes, continue", "description": "Cards look good, generate the next pillar"},
-      {"label": "Needs edits", "description": "I want to adjust specific cards before continuing"},
-      {"label": "Skip pillar", "description": "Exclude this pillar from the session prep"},
-      {"label": "Deeper", "description": "Regenerate with more depth on specific BPs"}
-    ]
-  }]
-}
-```
+- Yes, continue — cards look good, generate the next pillar
+- Needs edits — adjust specific cards before continuing
+- Skip pillar — exclude this pillar from the session prep
+- Deeper — regenerate with more depth on specific BPs
+
+**Single-pillar requests**: When the facilitator asks for cards for ONE specific pillar (e.g., "Help me prepare the Security pillar questions"), produce the full pillar's cards in one response. Do NOT ask for approval — deliver the complete output.
 
 ---STOP---
-Do NOT generate all pillars at once. Wait for approval between pillars.
+Do NOT generate all pillars at once when multiple are requested. Wait for approval between pillars.
 ---
 
 ## Step 5: Load reference material for depth
