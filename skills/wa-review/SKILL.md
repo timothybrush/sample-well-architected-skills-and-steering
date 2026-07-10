@@ -1,6 +1,6 @@
 ---
 name: wa-review
-description: Perform a full AWS Well-Architected Framework review evaluating all 57 questions across 6 pillars by analyzing code, IaC, and configurations to produce evidence-backed findings with Eisenhower-prioritized remediation.
+description: Perform a full or pillar-scoped AWS Well-Architected Framework review evaluating all 57 questions across 6 pillars by analyzing code, IaC, and configurations to produce evidence-backed findings with a Now/Next/Later remediation timeline.
 not_for: single-pillar deep-dives (use the specific pillar skill), learning WA (use wa-builder), ADRs (use architecture-decision-record), migration (use migration-readiness)
 version: 2.1.0
 ---
@@ -9,7 +9,49 @@ version: 2.1.0
 
 ## Step 1: Define the workload scope
 
-Ask the user to describe the workload:
+If the user has not provided context yet, prefer **checkbox-style discovery** (via `AskUserQuestion` or equivalent) over open-ended prompts — it's faster and produces more consistent inputs:
+
+```json
+{
+  "questions": [
+    {
+      "header": "Review scope",
+      "question": "What kind of review do you want?",
+      "multiSelect": false,
+      "options": [
+        {"label": "Full review", "description": "All 57 questions across 6 pillars with BP-level depth"},
+        {"label": "Quick review", "description": "Question-level scan of all 6 pillars, no BP files loaded"},
+        {"label": "Pillar-scoped", "description": "Deep-dive on 1-2 specific pillars only"},
+        {"label": "Score mode", "description": "Just the scorecard + filtered findings, no full report"}
+      ]
+    },
+    {
+      "header": "Criticality",
+      "question": "How business-critical is this workload?",
+      "multiSelect": false,
+      "options": [
+        {"label": "Revenue/customer-facing", "description": "Downtime impacts revenue or customers directly"},
+        {"label": "Internal production", "description": "Business-critical but internal-facing"},
+        {"label": "Non-production", "description": "Dev/test/staging environment"},
+        {"label": "Experiment/POC", "description": "Exploratory or short-lived"}
+      ]
+    },
+    {
+      "header": "Depth (score mode)",
+      "question": "If score mode: what severity depth?",
+      "multiSelect": false,
+      "options": [
+        {"label": "Critical only", "description": "Only Critical severity findings"},
+        {"label": "Critical + High", "description": "Critical and High severity"},
+        {"label": "All severities", "description": "Full report with Medium and Low too"},
+        {"label": "N/A (not score mode)", "description": "Not doing score mode"}
+      ]
+    }
+  ]
+}
+```
+
+Alternative — free-form prompt (use if the user prefers or if checkboxes aren't available):
 
 > What workload would you like me to review? Please share:
 > - **Workload name** and brief description
@@ -335,67 +377,38 @@ Output a structured report:
 ## Cross-Pillar Trade-offs
 {Conflicts between pillars and recommended resolution}
 
-## Prioritize Improvements — Eisenhower Matrix
+## Prioritized Remediation Plan — Now / Next / Later
 
-Not all findings should be addressed at once. Focus on a selected number of issues that make the most business impact and are easiest to implement. Then iterate.
+Present findings on a timeline that stakeholders can immediately act on. Each item lists action, effort, and (where relevant) owner.
 
-Classify each finding by **importance** (business value) and **effort** (time, complexity, headcount):
+### 🔥 Now (1-2 weeks) — Critical fixes and quick wins
+| Finding | Action | Effort | Owner |
+|---------|--------|--------|-------|
+{High-severity findings with low-effort fixes: enable encryption, tighten SG rules, add alarms, configure DLQs}
 
-```
-        HIGH IMPORTANCE
-             │
-   ┌─────────┼─────────┐
-   │  DO     │  PLAN   │
-   │  FIRST  │         │
-   │         │         │
-───┼─────────┼─────────┼───
-   │         │         │
-   │DELEGATE │  DEFER  │
-   │         │         │
-   └─────────┼─────────┘
-             │
-        LOW IMPORTANCE
-   LOW EFFORT    HIGH EFFORT
-```
+### 📅 Next (30-60 days) — Important improvements
+| Finding | Action | Effort | Dependencies |
+|---------|--------|--------|--------------|
+{Medium-effort work: implement auto-scaling, add caching, set up CI/CD gates, add multi-AZ}
 
-| Quadrant | Action | Findings |
-|----------|--------|----------|
-| **Do First** (High Importance, Low Effort) | Implement immediately | {finding IDs} |
-| **Plan** (High Importance, High Effort) | Schedule in roadmap, break into phases | {finding IDs} |
-| **Delegate** (Low Importance, Low Effort) | Batch together, assign to available team member | {finding IDs} |
-| **Defer** (Low Importance, High Effort) | Revisit in next iteration | {finding IDs} |
+### 🎯 Later (90+ days) — Strategic enhancements
+| Finding | Action | Effort | Dependencies |
+|---------|--------|--------|--------------|
+{Higher-investment work: multi-region DR, chaos engineering, re-architecture, compliance programs}
 
-### Solution Characteristics
+### Deferred
+{Findings intentionally not addressed this iteration, with brief justification}
 
-For each solution in "Do First" and "Plan":
+### Solution characteristics
+
+For every action in Now/Next:
 - **SMART goal**: Specific, Measurable, Achievable, Relevant, Time-bound
-- **Owner**: Identify who is responsible
-- **Simple over complex**: Choose the simplest solution unless complexity is a non-negotiable requirement
-- **Two-way door decisions**: Solutions should be extensible and evolve over time — avoid static solutions that cannot adapt
-- **Pattern-based**: Target solutions that can be codified, reused, and re-shared (reference AWS Architecture Center)
-
-## Prioritized Remediation Plan
-
-### Quick Wins (< 1 week) — "Do First" quadrant
-| Finding | Action | SMART Goal | Owner Suggestion | Effort |
-|---------|--------|-----------|-----------------|--------|
-{Config changes, enabling features, adding tags/alarms — simple, high-impact}
-
-### Foundation (1-4 weeks) — "Plan" quadrant
-| Finding | Action | Phases | Effort | Dependencies |
-|---------|--------|--------|--------|--------------|
-{Multi-AZ, CI/CD improvements, monitoring, caching — phased approach}
-
-### Strategic (1-3 months) — "Plan" quadrant (complex)
-| Finding | Action | Phases | Effort | Dependencies |
-|---------|--------|--------|--------|--------------|
-{DR, re-architecture, compliance programs — two-way door design}
-
-### Deferred — Revisit Next Iteration
-{Findings in "Delegate" and "Defer" quadrants with brief justification for deferral}
+- **Simple over complex**: Prefer the simplest solution that meets the requirement
+- **Two-way door**: Prefer reversible decisions; call out one-way doors explicitly
+- **Pattern-based**: Reference existing AWS solutions/blueprints where possible
 
 ## Next Steps
-{Top 5 concrete actions from the "Do First" quadrant — the team should start this week}
+{Top 5 concrete "Now" actions the team should start this week}
 ```
 
 ## Step 7: Offer follow-up

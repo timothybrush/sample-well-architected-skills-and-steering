@@ -31,19 +31,105 @@ If the facilitator shares an architecture diagram, analyze it and respond:
 >
 > Is this accurate? Anything to add before I generate the facilitation questions?
 
-If no context is provided yet, ask:
+If no context is provided yet, use `AskUserQuestion` (or equivalent structured-choice tool) to gather context via **checkboxes** — this is faster and produces more consistent inputs than free-form prompts. Ask in batches (max 4 questions per call):
 
-> To customize the review questions, share one or more of:
-> - **Architecture diagram** (image — I'll analyze it directly)
-> - **Workload name** and what it does (1-2 sentences)
-> - **Workload type** (e.g., web app, data pipeline, ML platform, IoT fleet, SaaS multi-tenant)
-> - **Tech stack** (key services: Lambda, ECS, RDS, DynamoDB, etc.)
-> - **Business criticality** (revenue-generating, internal tool, experiment)
-> - **Team maturity** (startup/greenfield, scaling, enterprise/mature)
-> - **Known concerns** (anything the customer already flagged)
-> - **Review scope** (full 6 pillars, or specific pillars/questions)
+**Batch 1: Workload basics**
+```json
+{
+  "questions": [
+    {
+      "header": "Workload type",
+      "question": "What kind of workload is this?",
+      "multiSelect": false,
+      "options": [
+        {"label": "Web/API application", "description": "Customer-facing web app or REST/GraphQL API"},
+        {"label": "Data pipeline / ETL", "description": "Batch or streaming data processing"},
+        {"label": "ML / GenAI platform", "description": "Model training, inference, RAG, or agents"},
+        {"label": "SaaS multi-tenant", "description": "Multi-tenant B2B/B2C SaaS platform"}
+      ]
+    },
+    {
+      "header": "Criticality",
+      "question": "How business-critical is this workload?",
+      "multiSelect": false,
+      "options": [
+        {"label": "Revenue-generating", "description": "Downtime directly impacts revenue"},
+        {"label": "Customer-facing", "description": "Users affected by any degradation"},
+        {"label": "Internal tool", "description": "Internal team productivity impact"},
+        {"label": "Experiment/POC", "description": "Non-production or exploratory"}
+      ]
+    },
+    {
+      "header": "Compliance",
+      "question": "Does this handle regulated data?",
+      "multiSelect": true,
+      "options": [
+        {"label": "PCI-DSS", "description": "Payment card data"},
+        {"label": "HIPAA", "description": "Healthcare/PHI data"},
+        {"label": "SOC 2", "description": "Enterprise trust requirements"},
+        {"label": "None / Unknown", "description": "No specific compliance regime"}
+      ]
+    },
+    {
+      "header": "Team maturity",
+      "question": "What's the team's cloud maturity level?",
+      "multiSelect": false,
+      "options": [
+        {"label": "Greenfield/startup", "description": "New team, few workloads in production"},
+        {"label": "Scaling", "description": "Some production experience, growing team"},
+        {"label": "Enterprise/mature", "description": "Multiple production workloads, established SRE"}
+      ]
+    }
+  ]
+}
+```
 
-If context is already provided, proceed without asking.
+**Batch 2: Focus and scope**
+```json
+{
+  "questions": [
+    {
+      "header": "Top concerns",
+      "question": "What areas concern you most going into this review? (select up to 3)",
+      "multiSelect": true,
+      "options": [
+        {"label": "Security posture", "description": "IAM, encryption, data protection"},
+        {"label": "Reliability / DR", "description": "Availability, SPOFs, disaster recovery"},
+        {"label": "Performance", "description": "Latency, throughput, scaling"},
+        {"label": "Cost", "description": "AWS spend, waste, right-sizing"}
+      ]
+    },
+    {
+      "header": "Review scope",
+      "question": "What scope of review do you want to prepare for?",
+      "multiSelect": false,
+      "options": [
+        {"label": "Full 6 pillars", "description": "Complete WAFR across all pillars"},
+        {"label": "Specific pillars", "description": "Deep-dive on 1-2 pillars only"},
+        {"label": "Pre-launch checkpoint", "description": "Focus on blockers to go-live"},
+        {"label": "Post-incident review", "description": "Focus on reliability and ops"}
+      ]
+    },
+    {
+      "header": "Time budget",
+      "question": "How much time do you have with the customer?",
+      "multiSelect": false,
+      "options": [
+        {"label": "1 hour", "description": "Rapid triage; prioritize ruthlessly"},
+        {"label": "Half day (3-4h)", "description": "Standard depth per pillar"},
+        {"label": "Full day", "description": "Deep-dive with breaks between pillars"},
+        {"label": "Multi-session", "description": "One pillar per meeting over multiple days"}
+      ]
+    }
+  ]
+}
+```
+
+Also ask for:
+- **Architecture diagram** (image — I'll analyze it directly)
+- **Workload name** and 1-2 sentence description
+
+If context is already provided (diagram + verbal), skip the checkboxes and proceed.
 
 ## Step 2: Architecture pre-assessment (per-pillar lenses)
 
@@ -228,13 +314,26 @@ For each WA question in scope, produce a **Facilitator Card** with this structur
 {Tips on conversation flow: when to dig deeper, when to move on, how to handle pushback or "maybe" answers.}
 ```
 
-**Progressive generation**: Generate cards ONE PILLAR AT A TIME. After each pillar, pause:
+**Progressive generation**: Generate cards ONE PILLAR AT A TIME. After each pillar, present findings and use `AskUserQuestion` for approval:
 
-> Pillar complete: {pillar_name} ({N} questions generated).
-> Ready for the next pillar, or would you like to adjust the depth/focus?
+```json
+{
+  "questions": [{
+    "header": "Approve",
+    "question": "Approve these {pillar_name} facilitator cards for the session?",
+    "multiSelect": false,
+    "options": [
+      {"label": "Yes, continue", "description": "Cards look good, generate the next pillar"},
+      {"label": "Needs edits", "description": "I want to adjust specific cards before continuing"},
+      {"label": "Skip pillar", "description": "Exclude this pillar from the session prep"},
+      {"label": "Deeper", "description": "Regenerate with more depth on specific BPs"}
+    ]
+  }]
+}
+```
 
 ---STOP---
-Do NOT generate all pillars at once. Wait for confirmation between pillars.
+Do NOT generate all pillars at once. Wait for approval between pillars.
 ---
 
 ## Step 5: Load reference material for depth
