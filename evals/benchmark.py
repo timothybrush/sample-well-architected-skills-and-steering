@@ -174,7 +174,7 @@ def call_mantle_model(model_id: str, messages: list[dict], system: str | None = 
     }
 
 
-THINKING_MODELS = {"claude-sonnet-5", "claude-opus-4-8", "claude-opus-4-7"}
+THINKING_MODELS = {"claude-sonnet-5", "claude-opus-4-8", "claude-opus-4-7", "claude-fable-5"}
 
 
 def _needs_thinking(model_id: str) -> bool:

@@ -10,6 +10,7 @@ models:
   # Anthropic Claude
   - us.anthropic.claude-sonnet-5
   - us.anthropic.claude-haiku-4-5-20251001-v1:0
+  - us.anthropic.claude-fable-5
   # Amazon Nova
   - us.amazon.nova-pro-v1:0
   - us.amazon.nova-lite-v1:0
@@ -109,6 +110,9 @@ pricing:
   us.anthropic.claude-haiku-4-5-20251001-v1:0:
     input: 0.80
     output: 4.00
+  us.anthropic.claude-fable-5:
+    input: 3.00
+    output: 15.00
   us.amazon.nova-pro-v1:0:
     input: 0.80
     output: 3.20
