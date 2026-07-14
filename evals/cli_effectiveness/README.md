@@ -4,6 +4,8 @@ The `evals/run.py` framework (one directory up) uses raw Amazon Bedrock Converse
 
 This directory ships the real-measurement harness we used to validate `wa-review` end-to-end. It invokes **Claude Code CLI** (`claude -p`) as the runtime and scores output against a **frozen ground truth of applicable Best Practices** derived from a 2-model × 5-run consensus panel.
 
+> **Note on published results:** The F1 and recall numbers in this repository (wa-review v2.2: F1 = 0.960, recall = 1.00) reflect a controlled evaluation — specific workload prompts, Opus tier, a specific ground truth panel, and a fixed point in time. **Customers are responsible for running their own evaluations** against their workloads, model tiers, and requirements before making data-driven decisions. The harness scripts and ground truth are provided so you can do exactly that.
+
 ## What you get
 
 - `measure_wa_review.py` — invokes `claude -p` with the wa-review skill installed and scores against ground truth

@@ -900,6 +900,9 @@ Compare how different foundation models perform on Well-Architected review tasks
 
 The benchmark below measures **subagent-mode full reviews** — the shipped skill's default path for `wa-review` full reviews, which dispatches 6 parallel Converse calls (one per pillar) per model with pre-loaded pillar references. This is what real users experience. Cost figures include all 6 subagent calls per review.
 
+> [!IMPORTANT]
+> **These results reflect a controlled evaluation environment** — a single workload prompt, a fixed region, and a specific point in time. Model performance, pricing, and availability vary across workloads, regions, and Bedrock tiers. **Customers are responsible for running their own evaluations and benchmarks** before making model selection or cost decisions for their specific use cases. Use the harness in `evals/` and the reproduction instructions below to run benchmarks against your own prompts and requirements.
+
 <!-- BENCHMARK-START -->
 ### Model Benchmark Results
 
