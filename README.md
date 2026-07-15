@@ -557,6 +557,40 @@ graph LR
 
 ---
 
+## 🤖 Agent runtime effectiveness
+
+Skills work across all supported runtimes, but effectiveness varies by runtime architecture — specifically whether the runtime supports parallel subagent dispatch (the mechanism wa-review's full-review path uses to achieve 100% BP coverage).
+
+The table below summarises measured results. The "Full review" path dispatches 6 parallel Task subagents; runtimes without this capability run sequentially.
+
+<details>
+<summary><strong>Measured effectiveness — wa-review v2.2 across runtimes</strong></summary>
+
+**Methodology:** same 6 eval cases × 3 runs each, scored against a 2-model × 5-run ground-truth consensus panel (270–306 applicable BPs per case). All runtimes use Opus-tier or equivalent top-tier models.
+
+| Case | Claude Code | Kiro | Codex (GPT-5.5) |
+| ---- | ----------- | ---- | --------------- |
+| 1 — Serverless e-commerce | 0.947 | 0.947 | 0.633 |
+| 2 — Monolithic Java on EC2 | **0.998** | **0.998** | 0.675 |
+| 3 — ECS + Aurora multi-tenant | 0.968 | 0.968 | 0.605 |
+| 4 — Pillar-scoped (SEC+REL) | 0.955 | 0.951 | **0.902** |
+| 5 — GenAI (Bedrock + Claude) | 0.936 | 0.936 | 0.674 |
+| 6 — Score mode | 0.958 | 0.958 | 0.615 |
+| **Mean** | **0.960** | **0.960** | **0.684** |
+| Run-to-run variance | zero | zero | high (stdev 0.03–0.28) |
+
+**Claude Code and Kiro** produce identical results. Both use the 6-parallel-subagent dispatch and the Full BP Ledger enforcement (v2.2). Zero run-to-run variance.
+
+**Codex** runs the skill sequentially — it doesn't use parallel Task dispatch. Coverage is non-deterministic: some runs load all 6 pillar files and reach near-perfect recall (Case 2 Run 3 hit F1 = 0.998); others stop after 2–3 pillars (F1 ~0.45). **Pillar-scoped mode** significantly improves Codex results — Case 4 (SEC+REL scoped) averaged 0.902, close to the parallel runtimes.
+
+**Kiro note:** Kiro's non-interactive mode (`--no-interactive`) requires the explicit instruction "do NOT offer follow-up actions" in the eval preamble — without it, score mode offers the Full BP Ledger as a separate step rather than producing it inline, dropping F1 to ~0.68. With the instruction it matches Claude Code exactly. This is an eval harness detail, not a production concern (interactive Kiro sessions don't have this issue).
+
+**Codex note:** Token usage is highly variable (270K–835K per run) because Codex's path through the skill is non-deterministic. Pillar-scoped reviews are more consistent and nearly as effective as full reviews on parallel runtimes. For full coverage on Codex, `SKILL-sequential.md` (tracked in [#106](https://github.com/aws-samples/sample-well-architected-skills-and-steering/issues/106)) will provide a deterministic sequential path once validated.
+
+</details>
+
+---
+
 ## 📋 Skills overview
 
 | Skill | Pillar(s) | Use when you need to... |
