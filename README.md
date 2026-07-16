@@ -843,7 +843,7 @@ The `evals/` runner is skill-agnostic — it reads `skills/{name}/SKILL.md` and 
 The paired-comparison approach (with skill vs bare model, same prompts) is the fair way to measure whether SKILL.md content is actually earning the tokens it costs. If your skill's delta is <10%, the guidance is probably too generic to move the model — worth revisiting.
 
 > [!NOTE]
-> **Limitation to be aware of.** The `evals/` runner uses raw Bedrock Converse API, which has no `Task` tool. Skills whose value depends on subagent dispatch (like wa-review's full-review mode) will look weaker here than they actually are in Claude Code / Kiro. See the [Real Claude Code CLI evaluation](#real-agent-evaluation) section for how wa-review is measured in a Task-capable runtime.
+> **Limitation to be aware of.** The `evals/` runner uses raw Bedrock Converse API, which has no `Task` tool. Skills whose value depends on subagent dispatch (like wa-review's full-review mode) will look weaker here than they actually are in Claude Code / Kiro. See the [Real Agent evaluation](#real-agent-evaluation) section for how wa-review is measured in a Task-capable runtime.
 
 ---
 
@@ -859,7 +859,7 @@ Two frameworks measure different kinds of skills. Both compare with-skill agains
 | `wafr-facilitator` | 61% | **97%** | +35% | LLM-as-judge (raw Converse) |
 | `migration-readiness` | 85% | **100%** | +15% | LLM-as-judge (raw Converse) |
 
-† `wa-review` is measured in the real Claude Code CLI runtime because its full-review path depends on the `Task` tool (6 parallel pillar subagents per review, v4.2+). Raw Bedrock Converse has no Task tool, so it can't execute the skill's subagent-dispatch pattern; scoring `wa-review` there produces misleading numbers. See [Real Claude Code CLI evaluation](#real-agent-evaluation) below for the measurement setup, and [`evals/cli_effectiveness/`](./evals/cli_effectiveness) for the harness code + ground truth to reproduce.
+† `wa-review` is measured in the real Agents CLI runtime because its full-review path depends on the `Task` tool (6 parallel pillar subagents per review, v4.2+). Raw Bedrock Converse has no Task tool, so it can't execute the skill's subagent-dispatch pattern; scoring `wa-review` there produces misleading numbers. See [Real Agent evaluation](#real-agent-evaluation) below for the measurement setup, and [`evals/cli_effectiveness/`](./evals/cli_effectiveness) for the harness code + ground truth to reproduce.
 
 > [!IMPORTANT]
 > **Don't run `evals/run.py --skill wa-review` and trust the number.** The raw Converse framework can't execute Task subagents, and wa-review's value is largely in that dispatch pattern. Use [`evals/cli_effectiveness/`](./evals/cli_effectiveness) instead — it measures the skill in a real `claude -p` runtime with a paired `--safe-mode` baseline. If you're evaluating a skill you're developing that ALSO depends on runtime tools (Task, MCP, etc.), use the CC CLI harness as a template rather than the Converse runner.
